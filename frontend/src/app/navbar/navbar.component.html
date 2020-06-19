@@ -1,0 +1,51 @@
+<nav id="sidebar" class="sidebar">
+    <div class="sidebar-content js-simplebar">
+        <a class="sidebar-brand" href="index-2.html">
+            <span class="align-middle"><img src="assets/img/logowh.png" /></span>
+        </a>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-header">
+                Hello
+            </li>
+            <li  [ngClass]="isActiveTab('/dashboard')">
+                <a routerLink="/dashboard"  class="sidebar-link">
+                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+                </a>
+            </li>
+
+            <li [ngClass]="isActiveTab('fiches')">
+                <a href="#pages" data-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="layout"></i> <span class="align-middle">Fiches</span>
+                </a>
+                <ul id="pages" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li [ngClass]="isActiveTab('/saisie-fiches')"><a class="sidebar-link" routerLink="/saisie-fiches">Saisie</a></li>
+                    <li [ngClass]="isActiveTab('/historique-fiches')"><a class="sidebar-link" routerLink="/historique-fiches">Historique</a></li>
+                </ul>
+            </li>
+
+            <li [ngClass]="isActiveTab('/profile')">
+                <a class="sidebar-link" routerLink="/profile">
+                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+                </a>
+            </li>  
+            <li [ngClass]="isActiveTab('/users')">
+                <a routerLink="/users" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Utilisateurs</span>
+                </a>
+            </li>
+        
+
+            
+        </ul>
+
+        <div class="sidebar-cta">
+            <div class="sidebar-cta-content">
+                <strong class="d-inline-block mb-2">DEMO</strong>
+                <div class="mb-3 text-sm">
+                    1.0
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
