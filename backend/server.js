@@ -3,10 +3,11 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 require('dotenv').config()
 const app = express();
-const db = require("./app/models");
-
-var corsOptions = {
-  origin: "http://"+process.env.NODE_ENV+':'+process.env.NODE_ENV
+const models = require("./app/models");
+const passport = require('passport')
+const session = require('express-session')
+const corsOptions = {
+  origin: "http://"+process.env.HOST_URL+':'+process.env.PORT
 };
 
 app.use(cors(corsOptions));
@@ -16,16 +17,23 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-db.sequelize.sync().then(() => {
+// For Passport
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+})); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+require("./app/routes/routes")(app);
+//load passport strategies
+require('./app/config/passport/passport.js');
+// set port, listen for requests
+
+models.sequelize.sync({ alter: true }).then(() => {
   console.log("sync to db.");
 });
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
-});
-require("./app/routes/user.routes")(app);
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

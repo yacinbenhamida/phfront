@@ -1,31 +1,41 @@
-const db = require("../models");
-const User = db.users;
-const Op = db.Sequelize.Op;
+const User = require("../models").users;
+const passport = require("passport");
 
-// Create and Save a new user
-exports.create = (req, res) => {
-  // Validate request
-  if (!req.body.data) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-    return;
-}
-User.create(req.body.data)
-.then(data => {
-  res.send(data);
-})
-.catch(err => {
-  res.status(500).send({
-    message:
-      err.message || "Some error occurred while creating the user."
-  });
-});
-}
 
-// Retrieve all users from the database.
-exports.findAll = (req, res) => {
-    User.findAll()
+exports.loggedOn = (req, res , next) => {
+
+  passport.authenticate('jwt', { session: false }, (err, user, info) => {
+    if (err) {
+      console.log(err);
+    }
+    if (info != undefined) {
+      console.log(info.message);
+      res.send(info.message);
+    } else {
+      console.log('user found in db from route');
+      User.findOne({
+        where: {
+          email: req.query.email,
+        },
+      }).then(user => {
+        if(user) {
+        res.status(200).send({
+          auth: true,
+          prenom: user.prenom,
+          nom: user.nom,
+          email: user.email,
+          password: user.password,
+          message: 'user found in db',
+        });
+      }
+      else res.sendStatus(401)
+      })
+    }
+  })(req, res, next);
+    
+};
+exports.findAll = (req,res) => {
+  User.findAll()
     .then(data => {
       res.send(data);
     })
@@ -35,4 +45,4 @@ exports.findAll = (req, res) => {
           err.message || "Some error occurred while retrieving users."
       });
     });
-};
+}

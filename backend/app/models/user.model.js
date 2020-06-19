@@ -28,15 +28,26 @@ module.exports = (sequelize, Sequelize) => {
         },
         isActivated: {
             type: Sequelize.BOOLEAN,
-            default: false
+            defaultValue: false
         },
         role: {
             type: Sequelize.ENUM,
             values: ['admin', 'superviseur', 'delege']
         },
-        createdAt: Sequelize.DATE,
-        updatedAt: Sequelize.DATE,
+        last_login: {
+            type: Sequelize.DATE,
+            defaultValue : null
+        },
+        status: {
+            type: Sequelize.ENUM('active', 'inactive'),
+            defaultValue: 'active'
+        },
+        about: {
+            type: Sequelize.TEXT,
+            defaultValue : null
+        },
+        createdAt: {type : Sequelize.DATE , default : Date.now()},
+        updatedAt: {type : Sequelize.DATE, default : null},
     });
-
     return User;
 };
