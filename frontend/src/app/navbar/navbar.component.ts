@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from '../models/user.model';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,8 +10,13 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private router:Router) { }
-
+  user : User = {} as User
+  constructor(private router: Router, private userv:UserService) {
+    this.userv.getCurrentUser().subscribe((res:any)=>{
+      this.user.nom = res.nom
+      this.user.prenom = res.prenom
+    })
+   }
   ngOnInit() {
   }
   isActiveTab(input){

@@ -28,8 +28,9 @@
               "src/assets/css/app.css"
             ],
             "scripts": [
-              "src/assets/js/vendor.js",
-              "src/assets/js/app.js"
+              "src/assets/js/app.js",
+              "src/assets/js/vendor.js"
+              
             ]
           },
           "configurations": {
@@ -67,7 +68,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "pharmavens:build"
+            "browserTarget": "pharmavens:build",
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {

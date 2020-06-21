@@ -24,8 +24,9 @@ exports.loggedOn = (req, res , next) => {
           prenom: user.prenom,
           nom: user.nom,
           email: user.email,
-          password: user.password,
-          message: 'user found in db',
+          role : user.role,
+          status : user.status,
+          about : user.about
         });
       }
       else res.sendStatus(401)
