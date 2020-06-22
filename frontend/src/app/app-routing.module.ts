@@ -6,17 +6,18 @@ import { HistoriqueFichesComponent } from './historique-fiches/historique-fiches
 import { ProfileComponent } from './profile/profile.component';
 import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { LoginComponent } from './login/login.component';
+import { AuthGuardService } from './services/authguard.service';
 
 
 const routes: Routes = [
-  {path : 'dashboard' , component : DashboardComponent},
-  {path : 'saisie-fiches', component : SaisieFichesComponent},
-  {path : 'historique-fiches', component : HistoriqueFichesComponent},
-  {path : 'profile', component : ProfileComponent},
-  {path : 'users', component : AdminUsersComponent},
-  {path : '',component : DashboardComponent},
+  {path : 'dashboard' , component : DashboardComponent , canActivate : [AuthGuardService]},
+  {path : 'saisie-fiches', component : SaisieFichesComponent, canActivate : [AuthGuardService]},
+  {path : 'historique-fiches', component : HistoriqueFichesComponent, canActivate : [AuthGuardService]},
+  {path : 'profile', component : ProfileComponent, canActivate : [AuthGuardService]},
+  {path : 'users', component : AdminUsersComponent, canActivate : [AuthGuardService]},
   {path : 'login' , component : LoginComponent},
-  {path : '*', redirectTo : ''}
+  { path: '', component: DashboardComponent, canActivate : [AuthGuardService] },
+  {path : '**', redirectTo : ''}
 ];
 
 @NgModule({

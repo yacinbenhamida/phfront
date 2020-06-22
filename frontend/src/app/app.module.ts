@@ -14,6 +14,9 @@ import { TopbarComponent } from './topbar/topbar.component';
 import {DataTablesModule} from 'angular-datatables';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserService } from './services/user.service';
+import { AuthGuardService } from './services/authguard.service';
+import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,9 +35,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DataTablesModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -11,14 +11,16 @@ import { User } from '../models/user.model';
 export class TopbarComponent implements OnInit {
   user : User = {} as User
   constructor(private router: Router, private userv:UserService) {
-    this.userv.getCurrentUser().subscribe((res:any)=>{
-      this.user.nom = res.nom
-      this.user.prenom = res.prenom
-    })
+  
    }
 
   ngOnInit() {
-    
+    if(this.userv.getCurrentUser()){
+       this.userv.getCurrentUser().subscribe((res:any)=>{
+      this.user.nom = res.nom
+      this.user.prenom = res.prenom
+    })
+  }
   }
   logout(){
     localStorage.clear()

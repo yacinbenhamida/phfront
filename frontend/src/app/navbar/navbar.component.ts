@@ -12,12 +12,15 @@ export class NavbarComponent implements OnInit {
 
   user : User = {} as User
   constructor(private router: Router, private userv:UserService) {
-    this.userv.getCurrentUser().subscribe((res:any)=>{
+   
+   }
+  ngOnInit() {
+    if(this.userv.getCurrentUser()){
+      this.userv.getCurrentUser().subscribe((res:any)=>{
       this.user.nom = res.nom
       this.user.prenom = res.prenom
     })
-   }
-  ngOnInit() {
+  }
   }
   isActiveTab(input){
     if(this.router.url === input || this.router.url.endsWith(input)) return 'sidebar-item active'
