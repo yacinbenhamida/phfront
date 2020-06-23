@@ -19,6 +19,7 @@ export class NavbarComponent implements OnInit {
       this.userv.getCurrentUser().subscribe((res:any)=>{
       this.user.nom = res.nom
       this.user.prenom = res.prenom
+      this.user.role = res.role
     })
   }
   }

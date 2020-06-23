@@ -29,16 +29,12 @@
                     <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
                 </a>
             </li>  
-            <li [ngClass]="isActiveTab('/users')">
+            <li *ngIf="user.role === 'admin'" [ngClass]="isActiveTab('/users')" >
                 <a routerLink="/users" class="sidebar-link collapsed">
                     <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Utilisateurs</span>
                 </a>
-            </li>
-        
-
-            
+            </li>       
         </ul>
-
         <div class="sidebar-cta">
             <div class="sidebar-cta-content">
                 <strong class="d-inline-block mb-2">DEMO</strong>

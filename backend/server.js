@@ -25,9 +25,10 @@ app.use(session({
 })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-require("./app/routes/routes")(app);
 //load passport strategies
 require('./app/config/passport/passport.js');
+require("./app/routes/routes")(app);
+
 // set port, listen for requests
 
 models.sequelize.sync({ alter: true }).then(() => {

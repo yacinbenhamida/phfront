@@ -3,12 +3,20 @@ export interface User{
     nom: string
     prenom:string
     cin :string
+    date_naissance : Date
     adresse :string
     imageUrl : string
     email:string
+    emailPerso : string
     password:string
     isActivated:boolean
+    type_contrat : string
+    salaire : number
+    frais : number
+    sexe : string
     role:string
+    telephone : string
+    telephone_perso : string
     last_login:Date
     status: string
     about:string

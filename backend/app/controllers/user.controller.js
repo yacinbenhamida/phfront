@@ -3,16 +3,6 @@ const passport = require("passport");
 
 
 exports.loggedOn = (req, res , next) => {
-
-  passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    if (err) {
-      console.log(err);
-    }
-    if (info != undefined) {
-      console.log(info.message);
-      res.send(info.message);
-    } else {
-      console.log('user found in db from route');
       User.findOne({
         where: {
           email: req.query.email,
@@ -31,9 +21,6 @@ exports.loggedOn = (req, res , next) => {
       }
       else res.sendStatus(401)
       })
-    }
-  })(req, res, next);
-    
 };
 exports.findAll = (req,res) => {
   User.findAll()
@@ -46,4 +33,12 @@ exports.findAll = (req,res) => {
           err.message || "Some error occurred while retrieving users."
       });
     });
+}
+
+
+exports.addUser = (req,res) =>{
+  if(req.body.user){
+    
+  }
+  else res.sendStatus(500)
 }

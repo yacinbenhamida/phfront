@@ -17,6 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from './services/user.service';
 import { AuthGuardService } from './services/authguard.service';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { FooterComponent } from './footer/footer.component';
+import { SmallModalComponent } from './small-modal/small-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +29,9 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
     ProfileComponent,
     AdminUsersComponent,
     TopbarComponent,
-    LoginComponent
+    LoginComponent,
+    FooterComponent,
+    SmallModalComponent
   ],
   imports: [
     BrowserModule,

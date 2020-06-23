@@ -1,11 +1,15 @@
+const users = require("../controllers/user.controller.js");
+const passport = require("passport");
+const auth = require("../controllers/auth.controller")
 module.exports = app => {
-    const users = require("../controllers/user.controller.js");
-    const passport = require('../config/passport/passport.js');
-    const router = require("express").Router();
-    const auth = require("../controllers/auth.controller")
-
-    router.get("/connected", users.loggedOn);
-    router.post('/login', auth.login)
-    router.post('/register', auth.register)
-    app.use('/', router);
-  };
+  app.post('/login', auth.login);
+  app.use('/register', passport.authenticate('jwt', {
+    session: false
+  })).post('/register', auth.register);
+  app.use('/connected', passport.authenticate('jwt', {
+    session: false
+  })).get('/connected', users.loggedOn);
+  app.use('/allUsers', passport.authenticate('jwt', {
+    session: false
+  })).get('/allUsers', users.findAll);
+};

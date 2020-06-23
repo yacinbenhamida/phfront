@@ -11,6 +11,10 @@ module.exports = (sequelize, Sequelize) => {
         prenom: {
             type: Sequelize.STRING
         },
+        date_naissance : {
+            type: Sequelize.DATE,
+            defaultValue : null
+        },
         cin : {
             type: Sequelize.STRING,  
         },
@@ -23,12 +27,25 @@ module.exports = (sequelize, Sequelize) => {
         email: {
             type: Sequelize.STRING
         },
+        emailPerso : {
+            type: Sequelize.STRING
+        },
+        telephone : {
+            type: Sequelize.STRING
+        },
+        telephone_perso : {
+            type: Sequelize.STRING
+        },
         password: {
             type: Sequelize.STRING
         },
         isActivated: {
             type: Sequelize.BOOLEAN,
             defaultValue: false
+        },
+        sexe : {
+            type: Sequelize.ENUM,
+            values: ['homme', 'femme']
         },
         role: {
             type: Sequelize.ENUM,
@@ -39,12 +56,22 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue : null
         },
         status: {
-            type: Sequelize.ENUM('active', 'inactive'),
+            type: Sequelize.ENUM('active', 'offline'),
             defaultValue: 'active'
         },
         about: {
             type: Sequelize.TEXT,
             defaultValue : null
+        },
+        type_contrat: {
+            type: Sequelize.ENUM('CDI', 'CDD', 'SIVP', 'autres'),
+            defaultValue: 'autres'
+        },
+        salaire : {
+            type: Sequelize.INTEGER
+        },
+        frais : {
+            type: Sequelize.INTEGER
         },
         createdAt: {type : Sequelize.DATE , default : Date.now()},
         updatedAt: {type : Sequelize.DATE, default : null},

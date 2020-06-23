@@ -4,6 +4,7 @@
     <div class='main'>
       <app-topbar *ngIf="router.url != '/login'"></app-topbar>
       <router-outlet></router-outlet>
+      <app-footer *ngIf="router.url != '/login'"></app-footer>
     </div>
   </div>
 </body>

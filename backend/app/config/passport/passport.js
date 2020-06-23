@@ -2,10 +2,10 @@
 const jwtSecret = require('./jwtConfig')
 const bcrypt = require('bcrypt');
 const BCRYPT_SALT_ROUNDS = 12;
-
+var User = require('../../models').users
 const passport = require('passport'),
   localStrategy = require('passport-local').Strategy,
-  User = require('../../models'),
+  
   JWTstrategy = require('passport-jwt').Strategy,
   ExtractJWT = require('passport-jwt').ExtractJwt;
 

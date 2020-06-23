@@ -8,10 +8,17 @@ import { UserService } from '../services/user.service';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private uservice:UserService) { }
+  constructor(private uservice: UserService) { }
 
   ngOnInit() {
-    
+    if (window.localStorage) {
+      if (!localStorage.getItem('firstLoad')) {
+        localStorage['firstLoad'] = true;
+        window.location.reload();
+      }
+      else
+        localStorage.removeItem('firstLoad');
+    }
   }
 
 }
