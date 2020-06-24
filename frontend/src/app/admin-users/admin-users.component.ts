@@ -10,11 +10,12 @@ import { Subject } from 'rxjs';
   styleUrls: ['./admin-users.component.css']
 })
 export class AdminUsersComponent implements OnInit {
-  titre : string = ""
-  contenu : string = ""
-  showInfo : boolean = true
+  error : boolean = false
+  deletionError : boolean = false
+
   public data:User [] = [];
-  userToAdd : User = {} as User
+  userToAdd : User = {} as User // form submission
+  selectedUser : User = {} as User // for deletion , edition
   constructor(private userservice:UserService) {
    }
 
@@ -24,6 +25,7 @@ export class AdminUsersComponent implements OnInit {
     this.userToAdd.type_contrat = 'type'
     this.userToAdd.role='Role'
     this.userToAdd.sexe = 'homme'
+    this.userToAdd.vehicule = false
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 5,
@@ -34,20 +36,19 @@ export class AdminUsersComponent implements OnInit {
       this.data = data
       this.usersTrigger.next()
     },err=>{
-      
+      this.error = true
     })
     
 }
   submit(f:NgForm){
-    if(f.valid){
+    if(f.valid && this.userToAdd){
       this.userservice.addUser(this.userToAdd).subscribe(res=>{
         window.location.reload()
       },err=>{
-        this.titre = 'ajout echoué'
-        this.contenu = "erreur de connexion, veuillez réessayer ultérieurement ou vérifier vos champs."
-        this.showInfo = true
+        this.error = true
       })
     }
+    else this.error = true
   }
   online(str){
     return str == 'active' ? 'badge badge-success text-center' : 'badge badge-danger text-center'
@@ -60,5 +61,14 @@ export class AdminUsersComponent implements OnInit {
   }
  checkGender(s){
    this.userToAdd.sexe = s
+ }
+ deleteUser(){
+   if(this.selectedUser){
+    this.userservice.deleteUser(this.selectedUser.id).subscribe(res=>{
+      window.location.reload()
+    },err=>{
+      this.deletionError = true
+    })
+   }
  }
 }

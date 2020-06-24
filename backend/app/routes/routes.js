@@ -12,4 +12,7 @@ module.exports = app => {
   app.use('/allUsers', passport.authenticate('jwt', {
     session: false
   })).get('/allUsers', users.findAll);
+  app.use('/deleteUser', passport.authenticate('jwt', {
+    session: false
+  })).post('/deleteUser', users.deleteUser);
 };

@@ -5,6 +5,13 @@ export interface User{
     cin :string
     date_naissance : Date
     adresse :string
+    adresse_actuelle : string
+    banque : string
+    rib_bancaire :string
+    diplome : string
+    matricule_cnss : string
+    vehicule:boolean
+    amortissement_vehicule : number
     imageUrl : string
     email:string
     emailPerso : string

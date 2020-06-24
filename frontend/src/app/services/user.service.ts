@@ -54,5 +54,15 @@ export class UserService {
     const user = localStorage.getItem('connected') ? JSON.parse(localStorage.getItem('connected')) : JSON.parse(sessionStorage.getItem('connected'))
     return user && user.token 
   }
- 
+  deleteUser(id:number){
+    let connnectedUser :any = this.getLoggedOn()
+    if(id && connnectedUser){
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "JWT "+connnectedUser.token });
+      let options = { headers: headers };
+      return this.http.post('/api/deleteUser',{id : id},options)
+    }
+    return null
+  }
 }

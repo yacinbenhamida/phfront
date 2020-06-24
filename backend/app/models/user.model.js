@@ -21,6 +21,29 @@ module.exports = (sequelize, Sequelize) => {
         adresse : {
             type: Sequelize.STRING
         },
+        adresse_actuelle : {
+            type: Sequelize.STRING
+        },
+        banque : {
+            type: Sequelize.STRING
+        },
+        rib_bancaire : {
+            type: Sequelize.STRING
+        },
+        diplome : {
+            type: Sequelize.STRING
+        },
+        matricule_cnss : {
+            type: Sequelize.STRING
+        },
+        vehicule:{
+            type : Sequelize.BOOLEAN,
+            defaultValue : false
+        },
+        amortissement_vehicule : {
+            type: Sequelize.INTEGER,
+            defaultValue : 0
+        },
         imageUrl : {
             type: Sequelize.STRING
         },

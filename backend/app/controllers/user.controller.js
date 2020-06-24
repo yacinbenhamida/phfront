@@ -36,9 +36,20 @@ exports.findAll = (req,res) => {
 }
 
 
-exports.addUser = (req,res) =>{
-  if(req.body.user){
-    
+exports.deleteUser = (req,res) =>{
+  if(req.body.id){
+    User.destroy({
+      where : {
+        id : req.body.id
+      }
+    }).then(res => {
+      res.sendStatus(200)
+    }).catch(err => {
+      res.status(404).send({
+        message:
+          err.message || "Some error occurred while deleting user."
+      });
+    });
   }
   else res.sendStatus(500)
 }
