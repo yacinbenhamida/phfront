@@ -76,6 +76,11 @@
                                             <input type="text" [(ngModel)]="userToAdd.imageUrl" name="image"
                                                 class="form-control" placeholder="http://img.png">
                                         </div>
+                                        <div class="form-group">
+                                            <label>diplome</label>
+                                            <input type="text" [(ngModel)]="userToAdd.diplome" name="diplome"
+                                                class="form-control" placeholder="License, doctorat, mastére...">
+                                        </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label>email personnel</label>
@@ -98,7 +103,7 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label>type contrat</label>
+                                                <label>type de contrat</label>
                                                 <select required #contrat='ngModel' [(ngModel)]="userToAdd.type_contrat"
                                                     name="contrat" class="form-control mb-3">
                                                     <option selected value="type">type</option>
@@ -129,19 +134,69 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label>Vehicule</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <div  class="input-group-text">
-                                                        <input #vehicule="ngModel"
-                                                        [(ngModel)]="userToAdd.vehicule" name="vehicule" type="checkbox">
-                                                    </div>
-                                                </div>
-                                                <input required="userToAdd.vehicule == true" [disabled]="userToAdd.vehicule == false" #amortissement="ngModel" min="1"
-                                                [(ngModel)]="userToAdd.amortissement_vehicule" name="amortissement en TND" 
-                                                type="number" class="form-control" placeholder="amortissement">
+                                            <div class="form-group custom-control custom-switch">
+                                                <input #vehicule="ngModel" [(ngModel)]="userToAdd.possede_vehicule"
+                                                    name="vehicule" type="checkbox" class="custom-control-input"
+                                                    id="customSwitch2">
+                                                <label for="customSwitch2" class="custom-control-label">{{vehicule.value == true ? 'posséde une voiture' : 'ne posséde pas de voiture'}}
+                                                </label>
                                             </div>
-                                           
+                                            <div *ngIf="vehicule.value">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label>modele</label>
+                                                    <input #modele="ngModel" [(ngModel)]="carToAdd.modele" required="userToAdd.possede_vehicule == true"
+                                                     name="modele" 
+                                                    type="text" class="form-control" placeholder="Peugeot,VW...">
+                                                </div>
+                                            <div class="form-group col-md-4">
+                                                <label>amortissement</label>
+                                                <input #amortissement="ngModel" [(ngModel)]="carToAdd.amortissement_vehicule" required="userToAdd.possede_vehicule == true" min="1"
+                                                 name="amortissementTND" 
+                                                type="number" class="form-control" placeholder="valeur en TND.">
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>kilométrage</label>
+                                                <input [(ngModel)]="carToAdd.kilometrage" name="km" required="userToAdd.possede_vehicule == true" minlength="1" type="number" placeholder="km." class="form-control">
+                                            </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label>immatriculation</label>
+                                                    <input name="carm" maxlength="9" [(ngModel)]="carToAdd.immatriculation" minlength="8"
+                                                         type="text" class="form-control" placeholder="XXXTUXXXX">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>n° carte grise</label>
+                                                    <input name="cg" [(ngModel)]="carToAdd.carte_grise" minlength="1"
+                                                         type="text" class="form-control" placeholder="XQKLMCODSDS...">
+                                                </div>
+                                                </div>
+                                                <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label>date échénace assurance</label>
+                                                    <input name="assurc" [(ngModel)]="carToAdd.date_echeance_assurance"  minlength="1"
+                                                    type="date" class="form-control">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>date derniere vidange</label>
+                                                    <input  name="date_derniere_vidange" [(ngModel)]="carToAdd.date_derniere_vidange"  minlength="1"
+                                                    type="date" class="form-control">
+                                                </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                    <label>numero carte essence</label>
+                                                    <input  name="numero_carte_essence" [(ngModel)]="carToAdd.numero_carte_essence" minlength="1"
+                                                    type="text" class="form-control" placeholder="ABDCEFGH...">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>code carte essence</label>
+                                                    <input name="code_carte_essence" [(ngModel)]="carToAdd.code_carte_essence" minlength="1"
+                                                    type="password" class="form-control" placeholder="*****">
+                                                </div>                         
+                                                </div>
+                                                </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
@@ -255,7 +310,7 @@
 
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-4 ml-sm-auto">
+                                    <div class="col-md-4 ml-sm-auto">
                                         <button type="submit" [disabled]="userForm.invalid" (click)="submit(userForm)"
                                             class="btn btn-primary btn-lg ">Enregistrer</button>
                                         <button type="reset" class="btn btn-danger btn-lg ml-2">Réinitialiser</button>
@@ -266,6 +321,7 @@
                     </div>
                 </div>
             </div>
+            <app-admin-users-edit *ngIf="editableUser" [targetUser]="editableUser"></app-admin-users-edit>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -305,10 +361,10 @@
                                         <td class="text-center"><span
                                                 [ngClass]="etatCompte(user.isActivated)">{{user.isActivated == true ? 'activé' : 'desactivé'}}</span>
                                             <span [ngClass]="online(user.status)">{{user.status}}</span></td>
-                                        <td class="text-center"><button class="btn btn-info"><i
+                                        <td class="text-center"><button (click)="setEditableUser(user)" class="btn btn-pill btn-primary"><i
                                                     class="fas fa-info"></i></button>
                                         </td>
-                                        <td class="text-center"><button *ngIf="user.role != 'admin'" class="btn btn-danger" data-toggle="modal" (click)="selectedUser = user"
+                                        <td class="text-center"><button class="btn btn-pill btn-danger" data-toggle="modal" (click)="selectedUser = user"
                                                 data-target="#sizedModalSm"><i class="fas fa-times"></i></button></td>
                                     </tr>
                                 </tbody>

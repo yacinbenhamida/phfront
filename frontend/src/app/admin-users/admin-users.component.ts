@@ -3,6 +3,7 @@ import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { Vehicule } from '../models/vehicule.model';
 
 @Component({
   selector: 'app-admin-users',
@@ -15,7 +16,10 @@ export class AdminUsersComponent implements OnInit {
 
   public data:User [] = [];
   userToAdd : User = {} as User // form submission
-  selectedUser : User = {} as User // for deletion , edition
+  carToAdd : Vehicule = {} as Vehicule
+  selectedUser : User = {} as User // for deletion
+  editableUser : User // for edition
+
   constructor(private userservice:UserService) {
    }
 
@@ -25,7 +29,7 @@ export class AdminUsersComponent implements OnInit {
     this.userToAdd.type_contrat = 'type'
     this.userToAdd.role='Role'
     this.userToAdd.sexe = 'homme'
-    this.userToAdd.vehicule = false
+    this.userToAdd.possede_vehicule = false
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 5,
@@ -42,7 +46,7 @@ export class AdminUsersComponent implements OnInit {
 }
   submit(f:NgForm){
     if(f.valid && this.userToAdd){
-      this.userservice.addUser(this.userToAdd).subscribe(res=>{
+      this.userservice.addUser(this.userToAdd,this.carToAdd).subscribe(res=>{
         window.location.reload()
       },err=>{
         this.error = true
@@ -70,5 +74,9 @@ export class AdminUsersComponent implements OnInit {
       this.deletionError = true
     })
    }
+ }
+ setEditableUser(user:User){
+   this.editableUser = null 
+  this.editableUser = user
  }
 }

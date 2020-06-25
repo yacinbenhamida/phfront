@@ -1,3 +1,5 @@
+import { Vehicule } from './vehicule.model';
+
 export interface User{
     id: number
     nom: string
@@ -10,8 +12,8 @@ export interface User{
     rib_bancaire :string
     diplome : string
     matricule_cnss : string
-    vehicule:boolean
-    amortissement_vehicule : number
+    possede_vehicule:boolean
+    vehicule : Vehicule
     imageUrl : string
     email:string
     emailPerso : string

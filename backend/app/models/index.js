@@ -20,5 +20,10 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require("./user.model.js")(sequelize, Sequelize);
+db.vehicules = require('./vehicule.model')(sequelize,Sequelize)
 
+// relations
+
+db.users.hasOne(db.vehicules)
+db.vehicules.belongsTo(db.users)
 module.exports = db;

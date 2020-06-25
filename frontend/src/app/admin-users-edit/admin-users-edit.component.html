@@ -1,0 +1,315 @@
+<h1 class="h3 mb-3">Modifier un utilisateur</h1>
+<div class="row">
+    <div class="col-12">
+     
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-subtitle text-muted">informations générales</h6>
+            </div>
+            <div class="card-body">
+            <div *ngIf="showSection == false" class="spinner-border text-dark mr-2" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            </div>
+            <div class="card-body" *ngIf="showSection == true">
+                <form #userForm="ngForm">
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Nom</label>
+                                    <input #nom="ngModel" minlength="3" maxlength="15" required
+                                        [(ngModel)]="targetUser.nom" name="nom" type="text" class="form-control"
+                                        placeholder="foulen">
+                                    <span class="msg font-11" *ngIf="nom.touched && nom.errors">nom
+                                        invalide*</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>prenom</label>
+                                    <input #prenom="ngModel" required minlength="3" maxlength="20"
+                                        [(ngModel)]="targetUser.prenom" name="prenom" type="text" class="form-control"
+                                        placeholder="ben foulen">
+                                    <span class="msg font-11" *ngIf="prenom.touched && prenom.errors">prenom
+                                        invalide*</span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>date de naissance</label>
+                                    <input #daten="ngModel" required [(ngModel)]="targetUser.date_naissance"
+                                        name="date_naissance" type="date" class="form-control" placeholder="JJ/MM/AAAA">
+                                    <span class="msg font-11" *ngIf="daten.touched && daten.errors">date
+                                        invalide*</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>n° CIN</label>
+                                    <input #cin="ngModel" required [(ngModel)]="targetUser.cin" pattern="^[0-9]{8}"
+                                        minlength="8" maxlength="8" name="cin" type="number" class="form-control"
+                                        placeholder="XXXXXXX">
+                                    <span class="msg font-11" *ngIf="cin.touched && cin.errors">n° CIN
+                                        invalide*</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>adresse</label>
+                                <input type="text" [(ngModel)]="targetUser.adresse" name="adr" class="form-control"
+                                    placeholder="15 rue des jasmins">
+                            </div>
+                            <div class="form-group">
+                                <label>adresse actuelle</label>
+                                <input type="text" [(ngModel)]="targetUser.adresse_actuelle" name="adract"
+                                    class="form-control" placeholder="24 rue el attarine">
+                            </div>
+                            <div class="form-group">
+                                <label>image</label>
+                                <input type="text" [(ngModel)]="targetUser.imageUrl" name="image" class="form-control"
+                                    placeholder="http://img.png">
+                            </div>
+                            <div class="form-group">
+                                <label>diplome</label>
+                                <input type="text" [(ngModel)]="targetUser.diplome" name="diplome" class="form-control"
+                                    placeholder="License, doctorat, mastére...">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>email personnel</label>
+                                    <input #emailp="ngModel" minlength="0"
+                                        pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+                                        [(ngModel)]="targetUser.emailPerso" name="emailp" type="text"
+                                        class="form-control" placeholder="foulen@farmavens.tn">
+                                    <span class="msg font-11" *ngIf="emailp.touched && emailp.errors">email
+                                        invalide*</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>email attribué</label>
+                                    <input #email="ngModel" minlength="0" type="text"
+                                        pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+                                        [(ngModel)]="targetUser.email" name="email" class="form-control"
+                                        placeholder="foulen@farmavens.tn">
+                                    <span class="msg font-11" *ngIf="email.touched && email.errors">email
+                                        invalide*</span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>type de contrat</label>
+                                    <select required #contrat='ngModel' [(ngModel)]="targetUser.type_contrat"
+                                        name="contrat" class="form-control mb-3">
+                                        <option selected value="type">type</option>
+                                        <option>CDI</option>
+                                        <option>CDD</option>
+                                        <option>SIVP</option>
+                                        <option>autres</option>
+                                    </select>
+                                    <span class="msg font-11" *ngIf="contrat.touched && contrat.value == 'type'">type de
+                                        contrat
+                                        non choisit*</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>salaire</label>
+                                    <input #salaire="ngModel" minlength="1" [(ngModel)]="targetUser.salaire"
+                                        name="salaire" type="number" class="form-control" placeholder="TND.">
+                                    <span class="msg font-11"
+                                        *ngIf="(salaire.touched && salaire.errors) || (salaire.touched && salaire.value <= 0)">salaire
+                                        invalide*</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>frais</label>
+                                    <input #frais="ngModel" minlength="1" [(ngModel)]="targetUser.frais" name="frais"
+                                        type="number" class="form-control" placeholder="TND.">
+                                    <span class="msg font-11"
+                                        *ngIf="(frais.touched && frais.errors) || (frais.touched && frais.value <= 0)">frais
+                                        invalides*</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group custom-control custom-switch">
+                                    <input #vehicule="ngModel" [(ngModel)]="targetUser.possede_vehicule" name="vehicule"
+                                        type="checkbox" class="custom-control-input" id="customSwitch3">
+                                    <label for="customSwitch3"
+                                        class="custom-control-label">{{vehicule.value == true ? 'posséde une voiture' : 'ne posséde pas de voiture'}}
+                                    </label>
+                                </div>
+                                <div *ngIf="vehicule.value == true && cartToEdit">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label>modele</label>
+                                            <input #modele="ngModel" [(ngModel)]="cartToEdit.modele"
+                                                required="targetUser.possede_vehicule == true" name="modele" type="text"
+                                                class="form-control" placeholder="Peugeot,VW...">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>amortissement</label>
+                                            <input #amortissement="ngModel"
+                                                [(ngModel)]="cartToEdit.amortissement_vehicule"
+                                                required="targetUser.possede_vehicule == true" min="1"
+                                                name="amortissementTND" type="number" class="form-control"
+                                                placeholder="valeur en TND.">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>kilométrage</label>
+                                            <input [(ngModel)]="cartToEdit.kilometrage" name="km"
+                                                required="targetUser.possede_vehicule == true" minlength="1"
+                                                type="number" placeholder="km." class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label>immatriculation</label>
+                                            <input name="carm" maxlength="9" [(ngModel)]="cartToEdit.immatriculation"
+                                                minlength="8" type="text" class="form-control" placeholder="XXXTUXXXX">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>n° carte grise</label>
+                                            <input name="cg" [(ngModel)]="cartToEdit.carte_grise" minlength="1"
+                                                type="text" class="form-control" placeholder="XQKLMCODSDS...">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>date échénace assurance</label>
+                                            <input name="assurc" [(ngModel)]="cartToEdit.date_echeance_assurance"
+                                                minlength="1" type="date" class="form-control">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>date derniere vidange</label>
+                                            <input name="date_derniere_vidange"
+                                                [(ngModel)]="cartToEdit.date_derniere_vidange" minlength="1" type="date"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>numero carte essence</label>
+                                            <input name="numero_carte_essence"
+                                                [(ngModel)]="cartToEdit.numero_carte_essence" minlength="1" type="text"
+                                                class="form-control" placeholder="ABDCEFGH...">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>code carte essence</label>
+                                            <input name="code_carte_essence" [(ngModel)]="cartToEdit.code_carte_essence"
+                                                minlength="1" type="password" class="form-control" placeholder="*****">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Banque</label>
+                                    <input #banque="ngModel" minlength="3" maxlength="25" required
+                                        [(ngModel)]="targetUser.banque" name="banque" type="text" class="form-control"
+                                        placeholder="BIAT,attijari...">
+                                    <span class="msg font-11" *ngIf="banque.touched && banque.errors">banque
+                                        invalide*</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>RIB banque</label>
+                                    <input #rib="ngModel" required minlength="3" maxlength="20"
+                                        [(ngModel)]="targetUser.rib_bancaire" name="rib" type="text"
+                                        class="form-control" placeholder="A41XXXXXX...">
+                                    <span class="msg font-11" *ngIf="rib.touched && rib.errors">RIB
+                                        invalide*</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Matricule CNSS</label>
+                                <input required #cnss="ngModel" type="text" minlength="8"
+                                    [(ngModel)]="targetUser.matricule_cnss" name="matricule_cnss" class="form-control"
+                                    placeholder="CQFGHIJ.....">
+                                <span class="msg font-11" *ngIf="cnss.touched && cnss.errors">Matricule CNSS
+                                    invalide*</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Mot de passe</label>
+                                <input required #mdp="ngModel" placeholder="*******" pattern="^[A-Z]+[a-zA-Z0-9]*"
+                                    minlength="8" [(ngModel)]="targetUser.password" name="pass" type="password"
+                                    class="form-control">
+                                <span class="msg font-11" *ngIf="mdp.touched && mdp.errors">mot de passe
+                                    faible*</span>
+                            </div>
+                            <div class="form-group">
+                                <label>confirmer le mot de passe</label>
+                                <input placeholder="*******" required #confirmpw="ngModel" ngModel
+                                    pattern="^[A-Z]+[a-zA-Z0-9]*" minlength="8" type="password" name="confirmpw"
+                                    class="form-control">
+                                <span class="msg font-11"
+                                    *ngIf="(confirmpw.touched && confirmpw.errors)||(mdp.touched && mdp.errors) || (confirmpw.touched && mdp.touched && confirmpw.value != mdp.value)">mot
+                                    de passe incompatibles*</span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Sexe</label>
+                                    <div class="custom-controls-inline">
+                                        <label class="custom-control custom-radio">
+                                            <input (click)="checkGender('homme')" name="custom-radio-3" type="radio"
+                                                class="custom-control-input" checked>
+                                            <span class="custom-control-label">Homme</span>
+                                        </label>
+                                        <label class="custom-control custom-radio">
+                                            <input (click)="checkGender('femme')" name="custom-radio-3" type="radio"
+                                                class="custom-control-input">
+                                            <span class="custom-control-label">Femme</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Role</label>
+                                    <select #role="ngModel" required [(ngModel)]="targetUser.role" name="role"
+                                        class="form-control mb-3">
+                                        <option selected value="Role">Role</option>
+                                        <option value="admin">Administrateur</option>
+                                        <option value="delege">Délegué / Animatrice</option>
+                                    </select>
+                                    <span class="msg font-11" *ngIf="role.touched && role.value === 'Role'">Role non
+                                        choisit</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>N° Tel personnel</label>
+                                    <input #telp="ngModel" required minlength="6" maxlength="20"
+                                        [(ngModel)]="targetUser.telephone_perso" name='telp' type="number"
+                                        class="form-control" placeholder="+216 XXX XX XX">
+                                    <span class="msg font-11" *ngIf="telp.touched && telp.errors">Numéro
+                                        invalide*</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>N° Tel attribué</label>
+                                    <input #tela="ngModel" [(ngModel)]="targetUser.telephone" name="tel" type="number"
+                                        class="form-control" placeholder="+216 XXX XX XX">
+                                    <span class="msg font-11" *ngIf="tela.touched && tela.errors">Numéro
+                                        invalide*</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>etat du compte </label>
+                                <div class="custom-control custom-switch">
+                                    <input #enabled="ngModel" [(ngModel)]="targetUser.isActivated" name="etat"
+                                        type="checkbox" class="custom-control-input" id="customSwitch12">
+                                    <label class="custom-control-label"
+                                        for="customSwitch12">{{enabled.value == true ? 'activé' : 'desactivé'}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>A propos</label>
+                                <textarea [(ngModel)]="targetUser.about" name="abt" class="form-control"
+                                    placeholder="Vos remarques, ou autres informations içi..." rows="3"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5 ml-sm-auto">
+                            <button type="submit" [disabled]="userForm.invalid" (click)="updateUser(userForm)"
+                                class="btn btn-warning btn-lg ">Enregistrer les modifications</button>
+                            <button type="reset" class="btn btn-danger btn-lg ml-2">Réinitialiser</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

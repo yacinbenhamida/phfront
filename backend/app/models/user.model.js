@@ -36,14 +36,11 @@ module.exports = (sequelize, Sequelize) => {
         matricule_cnss : {
             type: Sequelize.STRING
         },
-        vehicule:{
+        possede_vehicule:{
             type : Sequelize.BOOLEAN,
             defaultValue : false
         },
-        amortissement_vehicule : {
-            type: Sequelize.INTEGER,
-            defaultValue : 0
-        },
+        
         imageUrl : {
             type: Sequelize.STRING
         },

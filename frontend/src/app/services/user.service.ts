@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../models/user.model';
+import { Vehicule } from '../models/vehicule.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,14 +40,14 @@ export class UserService {
     }
     return null
   }
-  addUser(user:User){
+  addUser(user:User, vehicule : Vehicule){
     let connnectedUser :any = this.getLoggedOn()
     if(user && connnectedUser){
       let headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': "JWT "+connnectedUser.token });
       let options = { headers: headers };
-      return this.http.post('/api/register',{user : user},options)
+      return this.http.post('/api/register',{user : user , vehicule : vehicule},options)
     }
     return null
   }
@@ -62,6 +63,17 @@ export class UserService {
         'Authorization': "JWT "+connnectedUser.token });
       let options = { headers: headers };
       return this.http.post('/api/deleteUser',{id : id},options)
+    }
+    return null
+  }
+  updateUser(user:User){
+    let connnectedUser :any = this.getLoggedOn()
+    if(user && connnectedUser){
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "JWT "+connnectedUser.token });
+      let options = { headers: headers };
+      return this.http.post('/api/updateUser',{user : user },options)
     }
     return null
   }

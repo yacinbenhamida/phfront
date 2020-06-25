@@ -1,5 +1,4 @@
 const User = require("../models").users;
-const passport = require("passport");
 
 
 exports.loggedOn = (req, res , next) => {
