@@ -18,6 +18,17 @@ export class UserService {
   login(email,password){
     return this.http.post('/api/login',{email : email,password : password})
   }
+  logout(){
+    let user :any = this.getLoggedOn()
+    if(user){
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "JWT "+user.token });
+      let options = { headers: headers };
+      return this.http.get('/api/logout',options)
+    }
+    return null
+  }
   getCurrentUser(){
     let user :any = this.getLoggedOn()
     if(user){

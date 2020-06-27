@@ -21,7 +21,7 @@ db.sequelize = sequelize;
 
 db.users = require("./user.model.js")(sequelize, Sequelize);
 db.vehicules = require('./vehicule.model')(sequelize,Sequelize)
-
+db.produits = require('./produit.model')(sequelize,Sequelize)
 // relations
 
 db.users.hasOne(db.vehicules)

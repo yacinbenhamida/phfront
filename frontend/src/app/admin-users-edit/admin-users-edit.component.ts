@@ -14,10 +14,13 @@ export class AdminUsersEditComponent implements OnInit {
   @Input() targetUser : User 
   cartToEdit : Vehicule 
   showSection : boolean = false
+  error : boolean  = false
+  isVisible : boolean = false
   constructor(private userservice:UserService, private vehicleService : VehiculeService) { }
 
   ngOnInit() {
     if(this.targetUser){        
+      this.isVisible = true
       this.vehicleService.getUserVehicle(this.targetUser.email).subscribe((res:Vehicule)=>{
         if (res) this.cartToEdit = res
         else this.cartToEdit = {} as Vehicule 
@@ -34,9 +37,12 @@ export class AdminUsersEditComponent implements OnInit {
       this.userservice.updateUser(this.targetUser).subscribe((res)=>{
         if(res) window.location.reload()
       },err=>{
-        alert('error')
+        this.error = true
       })
     }
   }
-
+  dismiss(){
+    setTimeout(
+    this.targetUser = null , 2000)
+  }
 }

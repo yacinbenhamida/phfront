@@ -22,7 +22,8 @@ exports.loggedOn = (req, res , next) => {
       })
 };
 exports.findAll = (req,res) => {
-  User.findAll()
+  User.findAll({
+    attributes: {exclude: ['password']}})
     .then(data => {
       res.send(data);
     })

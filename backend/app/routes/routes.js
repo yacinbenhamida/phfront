@@ -4,6 +4,9 @@ const auth = require("../controllers/auth.controller")
 const cars = require("../controllers/vehicule.controller")
 module.exports = app => {
   app.post('/login', auth.login);
+  app.use('/logout', passport.authenticate('jwt', {
+    session: false
+  })).get('/logout', auth.logout);
   app.use('/register', passport.authenticate('jwt', {
     session: false
   })).post('/register', auth.register);

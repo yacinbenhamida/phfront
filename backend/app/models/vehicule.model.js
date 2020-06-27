@@ -15,7 +15,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         date_echeance_assurance : {
-            type : Sequelize.DATE
+            type : Sequelize.DATEONLY
         },
         numero_carte_essence : {
             type : Sequelize.STRING
@@ -24,7 +24,7 @@ module.exports = (sequelize, Sequelize) => {
             type : Sequelize.STRING
         },
         date_derniere_vidange : {
-            type : Sequelize.DATE
+            type : Sequelize.DATEONLY
         },
         kilometrage : {
             type : Sequelize.INTEGER

@@ -20,6 +20,8 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { FooterComponent } from './footer/footer.component';
 import { SmallModalComponent } from './small-modal/small-modal.component';
 import { AdminUsersEditComponent } from './admin-users-edit/admin-users-edit.component';
+import { ProductsComponent } from './products/products.component';
+import { ProductItemComponent } from './product-item/product-item.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +35,9 @@ import { AdminUsersEditComponent } from './admin-users-edit/admin-users-edit.com
     LoginComponent,
     FooterComponent,
     SmallModalComponent,
-    AdminUsersEditComponent
+    AdminUsersEditComponent,
+    ProductsComponent,
+    ProductItemComponent
   ],
   imports: [
     BrowserModule,

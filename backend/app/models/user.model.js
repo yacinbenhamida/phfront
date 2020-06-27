@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         date_naissance : {
-            type: Sequelize.DATE,
+            type: Sequelize.DATEONLY,
             defaultValue : null
         },
         cin : {

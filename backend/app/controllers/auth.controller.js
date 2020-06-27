@@ -4,7 +4,7 @@ const Vehicule = database.vehicules
 const jwt = require('jsonwebtoken')
 const jwtSecret = require('../config/passport/jwtConfig')
 const bCrypt = require('bcrypt')
-
+const dateformat = require('dateformat')
 const isValidPassword = function(userpass, password) {
     return bCrypt.compareSync(password, userpass);
 }
@@ -93,7 +93,10 @@ exports.login = (req, res, next) => {
       else res.sendStatus(404)
     });
 }
-
+exports.logout = (req,res) =>{
+  req.logout();
+  res.sendStatus(200)
+}
 exports.editUser = (req,res) => {
   User.findOne({
     where: {
@@ -129,9 +132,10 @@ exports.editUser = (req,res) => {
           updatedAt : Date(),
         },{ where : {id : user.id}})
         .then((result) => {
-          console.log(result)
           if(result && req.body.user.vehicule){
             let car = req.body.user.vehicule
+            if(req.body.user.possede_vehicule){
+            console.log(result)
             Vehicule.update({
             modele: car.modele,
             immatriculation : car.immatriculation,
@@ -139,12 +143,30 @@ exports.editUser = (req,res) => {
             date_echeance_assurance : car.date_echeance_assurance,
             numero_carte_essence : car.numero_carte_essence,
             code_carte_essence : car.code_carte_essence,
-            date_derniere_vidange : car.date_derniere_vidange,
+            date_derniere_vidange : car.date_derniere_vidange ,
             kilometrage : car.kilometrage,
             amortissement_vehicule : car.amortissement_vehicule
-            },{ where : {userId : result.id}}).then(v => {
+            },{ where : {userId : user.id}}).then(v => {
               console.log('user car updated in db');
             })
+            }
+            else{
+              Vehicule.create({
+                modele: car.modele,
+                immatriculation : car.immatriculation,
+                carte_grise:  car.carte_grise,
+                date_echeance_assurance : car.date_echeance_assurance,
+                numero_carte_essence : car.numero_carte_essence,
+                code_carte_essence : car.code_carte_essence,
+                date_derniere_vidange : car.date_derniere_vidange,
+                kilometrage : car.kilometrage,
+                amortissement_vehicule : car.amortissement_vehicule
+                }).then(v => {
+                  v.setUser(result)
+                  v.save()
+                  console.log('user car added in db');
+                })
+            }        
           }
           console.log('user updated in db');
           res.status(200).send({ message: 'user updated' });
