@@ -9,7 +9,8 @@ import {Router} from "@angular/router"
 export class LoginComponent implements OnInit {
   email : string = null
   password : string  = null
-  always : boolean = false
+  always : boolean = true
+  errors : boolean = false
   constructor(private userservice:UserService,private router: Router) { }
 
   ngOnInit() {
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
   }
   login(){
     if(this.email && this.password){
-      this.userservice.login(this.email,this.password).subscribe((res:any)=>{
+      try{
+        this.userservice.login(this.email,this.password).subscribe((res:any)=>{
         if(res && res.auth){
           let user :any = {
             token : res.token,
@@ -32,10 +34,12 @@ export class LoginComponent implements OnInit {
           
           this.router.navigate(['/dashboard'])
           
-        }else alert('informations invalides')
+        }else this.errors = true
       },(err)=>{
-        alert('informations invalides')
-      })
+        this.errors = true
+      })}catch(e){
+        this.errors = true
+      }
     }
   }
   check(){

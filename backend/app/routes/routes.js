@@ -30,6 +30,9 @@ module.exports = app => {
   app.use('/addProduct', passport.authenticate('jwt', {
     session: false
   })).post('/addProduct', products.addProduct);
+  app.use('/editProduct', passport.authenticate('jwt', {
+    session: false
+  })).post('/editProduct', products.editProduct);
   app.use('/allProducts', passport.authenticate('jwt', {
     session: false
   })).get('/allProducts', products.getAllProducts);

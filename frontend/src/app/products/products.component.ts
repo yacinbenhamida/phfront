@@ -13,6 +13,9 @@ export class ProductsComponent implements OnInit {
   addError : boolean = false
   showForm : boolean = false
   products : Produit [] = []
+  modification : boolean = false
+  ajout : boolean = true
+  selectedProduct : Produit
   constructor(private prodServ : ProductService) { }
 
   loadProducts(){
@@ -26,9 +29,17 @@ export class ProductsComponent implements OnInit {
     })
   }
   submit(f:NgForm){
-    console.log(f)
     if(f.valid && this.productToAdd){
       this.prodServ.addProduct(this.productToAdd).subscribe((res)=>{
+        if(res) window.location.reload()
+      },error=>{
+        this.addError = true
+      } )
+    }
+  }
+  submitModif(f:NgForm){
+    if(f.valid && this.productToAdd){
+      this.prodServ.editProduct(this.productToAdd).subscribe((res)=>{
         if(res) window.location.reload()
       },error=>{
         this.addError = true
@@ -40,5 +51,31 @@ export class ProductsComponent implements OnInit {
       this.products = this.products.filter(x=>x.libelle.toLowerCase().indexOf(content.toLowerCase()) != -1 ||x.libelle.toLowerCase().includes(content.toLowerCase()))
     }
     else this.ngOnInit()
+  }
+  handleProductOp($event){
+    let resval = $event
+    if (resval.op == 'edit' && resval.product){
+      this.productToAdd = resval.product
+      this.modification = true
+      this.ajout = false
+      this.showForm = true
+    }else if(resval.op == 'del' && resval.product){
+      // delete
+      this.selectedProduct = resval.product
+    }
+  }
+  deleteProduct(){
+
+  }
+  showPanel(){
+    this.modification = false
+    this.ajout = true
+    this.showForm = true
+    if(this.productToAdd) this.productToAdd = {} as Produit
+  }
+  hidePanel(){
+    this.modification = false
+    this.ajout = true
+    this.showForm = false
   }
 }

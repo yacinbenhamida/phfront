@@ -35,3 +35,26 @@ exports.getAllProducts = (req,res)=>{
           });
         });
 }
+exports.editProduct = (req,res)=>{
+  let produit = req.body.produit
+    if(produit){
+        Produit.update({
+            libelle: produit.libelle,
+            image_url : produit.image_url,
+            prix :produit.prix,
+            nb_gellules : produit.nb_gellules,
+            guide_gamme:produit.guide_gamme,
+            fiche_poso :produit.fiche_poso,
+            composition : produit.composition,
+            etude_cliniques : produit.etude_cliniques,
+            description : produit.description
+        },{ where : {id : produit.id}}).then((result)=>{
+            if(result){
+                res.send({message : 'product edited'})
+            }
+        })
+    }else res.status(403).send({
+        message:
+          "Some error occurred while editing a product."
+      });
+}

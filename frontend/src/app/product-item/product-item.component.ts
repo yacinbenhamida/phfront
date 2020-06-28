@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { Produit } from '../models/produit.model';
 
 @Component({
@@ -8,9 +8,19 @@ import { Produit } from '../models/produit.model';
 })
 export class ProductItemComponent implements OnInit {
 @Input() product : Produit
+@Output() productOperation = new EventEmitter<any>()
+isSelected : boolean = false
   constructor() { }
 
   ngOnInit() {
+  }
+  deleteProduct(){
+    this.isSelected = true
+    this.productOperation.emit({product : this.product, 'op' : 'del'})
+  }
+  editProduct(){
+    this.isSelected = true
+    this.productOperation.emit({product : this.product , 'op' : 'edit'})
   }
 
 }

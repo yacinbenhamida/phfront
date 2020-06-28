@@ -5,25 +5,31 @@
         </a>
 
         <ul class="sidebar-nav">
-            <li class="sidebar-header">
-                Hello
+            <li *ngIf="user" class="sidebar-header">
+                Hello, {{user.nom}}
             </li>
-            <li *ngIf="user.role === 'admin'" [ngClass]="isActiveTab('/products')" >
-                <a routerLink="/products" class="sidebar-link collapsed">
-                    <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Produits</span>
-                </a>
-            </li> 
-            <li *ngIf="user.role === 'admin'" [ngClass]="isActiveTab('/users')" >
-                <a routerLink="/users" class="sidebar-link collapsed">
-                    <i class="align-middle" data-feather="tag"></i> <span class="align-middle">Utilisateurs</span>
-                </a>
-            </li>   
+            
+               
             <li  [ngClass]="isActiveTab('/dashboard')">
                 <a routerLink="/dashboard"  class="sidebar-link">
                     <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
                 </a>
             </li>
-
+            <li *ngIf="user.role === 'admin'" [ngClass]="isActiveTab('/products')" >
+                <a class="sidebar-link" routerLink="/products" >
+                    <i class="align-middle" data-feather="tag"></i> <span class="align-middle">Produits</span>
+                </a>
+            </li> 
+            <li *ngIf="user.role === 'admin'" [ngClass]="isActiveTab('/packs')" >
+                <a class="sidebar-link" routerLink="/packs" >
+                    <i class="align-middle" data-feather="layers"></i> <span class="align-middle">Packs</span>
+                </a>
+            </li> 
+            <li *ngIf="user.role === 'admin'" [ngClass]="isActiveTab('/users')" >
+                <a routerLink="/users" class="sidebar-link">
+                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Utilisateurs</span>
+                </a>
+            </li>
             <li [ngClass]="isActiveTab('fiches')">
                 <a href="#pages" data-toggle="collapse" class="sidebar-link collapsed">
                     <i class="align-middle" data-feather="layout"></i> <span class="align-middle">Fiches</span>
