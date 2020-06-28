@@ -15,6 +15,7 @@ exports.loggedOn = (req, res , next) => {
           email: user.email,
           role : user.role,
           status : user.status,
+          imageUrl : user.imageUrl,
           about : user.about
         });
       }

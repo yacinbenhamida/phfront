@@ -1,4 +1,4 @@
-const Produit = require('../models/produit.model').produits
+const Produit = require('../models').produits
 exports.addProduct = (req,res) => {
     let produit = req.body.produit
     if(produit){
@@ -10,13 +10,17 @@ exports.addProduct = (req,res) => {
             guide_gamme:produit.guide_gamme,
             fiche_poso :produit.fiche_poso,
             composition : produit.composition,
-            etude_cliniques : produit.etude_cliniques
+            etude_cliniques : produit.etude_cliniques,
+            description : produit.description
         }).then((result)=>{
             if(result){
                 res.send({message : 'product added'})
             }
         })
-    }else res.status(403)
+    }else res.status(403).send({
+        message:
+          "Some error occurred while adding products."
+      });
     
 }
 exports.getAllProducts = (req,res)=>{

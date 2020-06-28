@@ -1,31 +1,29 @@
-<div class="col-12 col-md-6 col-lg-3">
-    <div class="card">
+<div class="card">
+    <div class="card-header px-4 pt-4">
+        <div class="float-right">
+            <a> <i class="far fa-fw fa-edit"></i></a>
 
-        <img class="card-img-top" src="product.image_url" alt="Unsplash">
-
-        <div class="card-header px-4 pt-4">
-            <div class="card-actions float-right">
-                <div class="dropdown show">
-                    <a href="#" data-toggle="dropdown" data-display="static">
-                        <i class="align-middle" data-feather="more-horizontal"></i>
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </div>
-            </div>
-            <h5 class="card-title mb-0">{{product.libelle}}</h5>
-            <div class="badge badge-warning my-2">boite de {{product.nb_gellules}}</div>
         </div>
-        <div class="card-body px-4 pt-2">
-            <p>{{product.description}}</p></div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item px-4 pb-4">
-                <p class="mb-2 font-weight-bold">Progress <span class="float-right">{{product.prix}}</span></p>
-            </li>
-        </ul>
+        <div class="float-left">
+            <a><i class="fas fa-times-circle"></i></a>
+        </div>
     </div>
+    <img class="card-img-top" [src]="product.image_url">
+
+    <div class="card-header px-4 pt-4">
+        <h5 class="card-title mb-0">{{product.libelle}}</h5>
+        <div class="badge badge-warning my-2">boite de {{product.nb_gellules}}</div>
+    </div>
+    <div class="card-body px-4 pt-2">
+        <p>{{product.description}}</p>
+        <a *ngIf="product.composition" [href]="product.composition" target="_blank"><i class="fas fa-wrench"></i> composition </a><br />
+        <a *ngIf="product.fiche_poso" [href]="product.fiche_poso" target="_blank"><i class="fas fa-file-alt"></i> posologie </a> <br />
+        <a *ngIf="product.etude_cliniques" [href]="product.etude_cliniques" target="_blank"><i class="fas fa-file-medical-alt"></i> etudes cliniques</a>
+    </div>
+    <hr class="mb-2">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item px-4 pb-4">
+            <p class="mb-2 font-weight-bold"><span class="float-right">PRIX : {{product.prix}} TND</span></p>
+        </li>
+    </ul>
 </div>

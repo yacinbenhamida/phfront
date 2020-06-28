@@ -9,10 +9,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         description :{
-            type: Sequelize.STRING
+            type: Sequelize.TEXT
         },
         image_url : {
-            type: Sequelize.STRING
+            type: Sequelize.TEXT
         },
         prix : {
             type: Sequelize.INTEGER
@@ -21,16 +21,16 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER
         },
         guide_gamme: {
-            type: Sequelize.STRING
+            type: Sequelize.TEXT
         },
         fiche_poso : {
-            type : Sequelize.STRING
+            type : Sequelize.TEXT
         },
         composition : {
             type : Sequelize.TEXT
         },
         etude_cliniques : {
-            type : Sequelize.STRING
+            type : Sequelize.TEXT
         },
         createdAt: {type : Sequelize.DATE , default : Date.now()},
         updatedAt: {type : Sequelize.DATE, default : null},

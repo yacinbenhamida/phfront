@@ -42,7 +42,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         
         imageUrl : {
-            type: Sequelize.STRING
+            type: Sequelize.TEXT
         },
         email: {
             type: Sequelize.STRING

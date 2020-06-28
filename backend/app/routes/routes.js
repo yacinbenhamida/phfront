@@ -2,6 +2,7 @@ const users = require("../controllers/user.controller.js");
 const passport = require("passport");
 const auth = require("../controllers/auth.controller")
 const cars = require("../controllers/vehicule.controller")
+const products = require("../controllers/produit.controller")
 module.exports = app => {
   app.post('/login', auth.login);
   app.use('/logout', passport.authenticate('jwt', {
@@ -25,4 +26,11 @@ module.exports = app => {
   app.use('/updateUser', passport.authenticate('jwt', {
     session: false
   })).post('/updateUser', auth.editUser);
+  // products 
+  app.use('/addProduct', passport.authenticate('jwt', {
+    session: false
+  })).post('/addProduct', products.addProduct);
+  app.use('/allProducts', passport.authenticate('jwt', {
+    session: false
+  })).get('/allProducts', products.getAllProducts);
 };

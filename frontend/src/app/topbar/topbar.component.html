@@ -143,8 +143,8 @@
                     <i class="align-middle" data-feather="settings"></i>
                 </a>
 
-                <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
-                    <img src="assets/img/avatars/avatar.jpg" class="avatar img-fluid rounded mr-1" /> <span class="text-dark" *ngIf="user">{{user.prenom}} {{user.nom}}</span>
+                <a  *ngIf="user" class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                    <img  [src]="user.imageUrl" class="avatar img-fluid rounded mr-1" /> <span class="text-dark" >{{user.prenom}} {{user.nom}}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" routerLink="profile"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>

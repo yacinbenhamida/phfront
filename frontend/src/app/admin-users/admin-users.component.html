@@ -340,17 +340,20 @@
                                 [dtOptions]="dtOptions">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>role</th>
                                         <th>Nom Complet</th>
                                         <th>Emails</th>
                                         <th>N° telephone</th>
                                         <th>etat du compte</th>
-                                        <th>informations</th>
-                                        <th>supprimer</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let user of data">
+                                        <td>
+                                            <img [src]="user.imageUrl ? user.imageUrl : 'assets/img/avatars/avatar.jpg'" width="48" height="48" class="rounded-circle mr-2" alt="Avatar">
+                                        </td>
                                         <td class="text-center"><span
                                                 [ngClass]="roleClass(user.role)">{{user.role}}</span></td>
                                         <td>{{user.nom}} {{user.prenom}}</td>
@@ -364,9 +367,9 @@
                                             <span [ngClass]="online(user.status)">{{user.status}}</span></td>
                                         <td class="text-center"><button (click)="setEditableUser(user)" class="btn btn-pill btn-primary"><i
                                                     class="fas fa-info"></i></button>
-                                        </td>
-                                        <td class="text-center"><button class="btn btn-pill btn-danger" data-toggle="modal" (click)="selectedUser = user"
-                                                data-target="#sizedModalSm"><i class="fas fa-times"></i></button></td>
+                                                    <button class="btn btn-pill btn-danger ml-2" data-toggle="modal" (click)="selectedUser = user"
+                                                data-target="#sizedModalSm"><i class="fas fa-times"></i></button>
+
                                     </tr>
                                 </tbody>
                             </table>
