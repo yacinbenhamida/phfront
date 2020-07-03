@@ -22,6 +22,9 @@ import { SmallModalComponent } from './small-modal/small-modal.component';
 import { AdminUsersEditComponent } from './admin-users-edit/admin-users-edit.component';
 import { ProductsComponent } from './products/products.component';
 import { ProductItemComponent } from './product-item/product-item.component';
+import { PacksComponent } from './packs/packs.component';
+import { ClientPharmaciesComponent } from './client-pharmacies/client-pharmacies.component';
+import { ClientGrossistesComponent } from './client-grossistes/client-grossistes.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +40,10 @@ import { ProductItemComponent } from './product-item/product-item.component';
     SmallModalComponent,
     AdminUsersEditComponent,
     ProductsComponent,
-    ProductItemComponent
+    ProductItemComponent,
+    PacksComponent,
+    ClientPharmaciesComponent,
+    ClientGrossistesComponent
   ],
   imports: [
     BrowserModule,

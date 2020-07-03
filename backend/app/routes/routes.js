@@ -3,6 +3,7 @@ const passport = require("passport");
 const auth = require("../controllers/auth.controller")
 const cars = require("../controllers/vehicule.controller")
 const products = require("../controllers/produit.controller")
+const clients = require('../controllers/client.controller')
 module.exports = app => {
   app.post('/login', auth.login);
   app.use('/logout', passport.authenticate('jwt', {
@@ -17,6 +18,9 @@ module.exports = app => {
   app.use('/allUsers', passport.authenticate('jwt', {
     session: false
   })).get('/allUsers', users.findAll);
+  app.use('/allDeleges', passport.authenticate('jwt', {
+    session: false
+  })).get('/allDeleges', users.findAllDeleges);
   app.use('/deleteUser', passport.authenticate('jwt', {
     session: false
   })).post('/deleteUser', users.deleteUser);
@@ -36,4 +40,19 @@ module.exports = app => {
   app.use('/allProducts', passport.authenticate('jwt', {
     session: false
   })).get('/allProducts', products.getAllProducts);
+  app.use('/deleteProduct', passport.authenticate('jwt', {
+    session: false
+  })).post('/deleteProduct', products.deleteProduct);
+  app.use('/allClients', passport.authenticate('jwt', {
+    session: false
+  })).get('/allClients', clients.getAllClients);
+  app.use('/addClient', passport.authenticate('jwt', {
+    session: false
+  })).post('/addClient', clients.addClient);
+  app.use('/editClient', passport.authenticate('jwt', {
+    session: false
+  })).post('/editClient', clients.editClient);
+  app.use('/deleteClient', passport.authenticate('jwt', {
+    session: false
+  })).post('/deleteClient', clients.deleteClient);
 };

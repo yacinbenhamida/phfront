@@ -1,0 +1,165 @@
+<div class="main">
+    <main class="content">
+        <div class="container-fluid p-0">
+
+            <button *ngIf="!showForm" (click)="showPanel()" class="btn btn-primary float-right mt-n1"><i
+                    class="fas fa-plus"></i> Nouvelle pharmacie</button>
+            <button *ngIf="showForm" (click)="hidePanel()" class="btn btn-danger float-right mt-n1"><i
+                    class="fas fa-times"></i> Annuler</button>
+            <h1 class="h3 mb-3">Pharmacies</h1>
+            <!--form-->
+            <div class="row" *ngIf="showForm">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Ajouter une pharmacie</h5>
+                            <h6 class="card-subtitle text-muted">informations générales</h6>
+                            <!--    alert message    -->
+                            <div *ngIf="addError" class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                <div class="alert-message">
+                                    <strong>Ajout echoué</strong> Veuillez réessayer ultérieurement, ou vérifiez vos
+                                    champs.
+                                </div>
+                            </div>
+                            <!--end alert-->
+                        </div>
+                        <div class="card-body">
+                            <form #grForm="ngForm">
+                                <div class="row">
+                                    <div class="col-12 col-lg-12">
+                                            <div class="form-group">
+                                                <label>nom pharmacie</label>
+                                                <input #nomg="ngModel" minlength="3" required
+                                                    [(ngModel)]="pharmacieToAdd.nom_client" name="nom_client" type="text"
+                                                    class="form-control" placeholder="neoxam, seller...">
+                                                <span class="msg font-11"
+                                                    *ngIf="nomg.touched && nomg.errors">nom
+                                                    invalide*</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>localite</label>
+                                                <input #localite="ngModel" required minlength="3"
+                                                    [(ngModel)]="pharmacieToAdd.Localite" name="localite" type="text"
+                                                    class="form-control" placeholder="adresse...">
+                                                <span class="msg font-11" *ngIf="localite.touched && localite.errors">localite
+                                                    invalide*</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>animatrice / animateur</label>
+                                            <select required #contrat='ngModel'  [(ngModel)]="pharmacieToAdd.delegue?pharmacieToAdd.delegue.id : pharmacieToAdd.delegue "
+                                                    name="deleg" class="form-control mb-3">
+                                                    <option  *ngFor="let d of deleges" [ngValue]="d.id" >{{d.nom}} {{d.prenom}} {{d.email}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>addresse complete </label>
+                                                <textarea [(ngModel)]="pharmacieToAdd.addresse" name="adr"
+                                                    class="form-control"
+                                                    placeholder="l'adresse compléte..."
+                                                    rows="4"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>partenaires </label>
+                                                <textarea [(ngModel)]="pharmacieToAdd.partenaires" name="part"
+                                                    class="form-control"
+                                                    placeholder="Vos remarques, ou autres informations içi..."
+                                                    rows="4"></textarea>
+                                            </div>
+                                            <div class="form-row mt-3 float-right ">
+                                                <div class="">
+                                                    <button type="submit" *ngIf="ajout" [disabled]="grForm.invalid"
+                                                        (click)="submit(grForm)"
+                                                        class="btn btn-primary btn-lg ">Enregistrer</button>
+                                                        <button type="submit" *ngIf="modification" [disabled]="grForm.invalid"
+                                                        (click)="submitModif(grForm)"
+                                                        class="btn btn-warning btn-lg ">Enregistrer</button>
+                                                    <button type="reset"
+                                                        class="btn btn-danger btn-lg ml-2">Réinitialiser</button>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--endform-->
+            <div class="row">
+        </div>
+            <div class="row">
+                <div *ngIf="listgr.length == 0" class="col-md-12">
+                <div class="alert alert-primary alert-outline alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <div class="alert-icon">
+                        <i class="far fa-fw fa-bell"></i>
+                    </div>
+                    <div class="alert-message">
+                        <strong>Pas de pharmacies</strong> pas de pharmacies dans la liste
+                    </div>
+                </div>
+            </div>
+                <div class="col-12" >
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Liste des pharmacies</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped table-bordered " [dtTrigger]="trigger" datatable
+                                [dtOptions]="dtOptions">
+                                <thead>
+                                    <tr>
+                                        <th>nom</th>
+                                        <th>Localite</th>
+                                        <th>adresse</th>
+                                        <th>animateur(trice)</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let g of listgr">
+                                        <td>{{g.nom_client}}</td>
+                                        <td>{{g.Localite}}</td>
+                                        <td>{{g.addresse}}</td>
+                                        <td>{{g.delegue? g.delegue.nom+' '+g.delegue.prenom : ''}}</td>
+                                    <td class="text-center"><button (click)="editpharmacie(g)" class="btn btn-pill btn-primary"><i
+                                                class="fas fa-info"></i></button>
+                                                <button class="btn btn-pill btn-danger ml-2" data-toggle="modal" (click)="selectedpharmacie = g"
+                                            data-target="#sizedModalSm"><i class="fas fa-times"></i></button>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<!--modal-->
+<div class="modal fade" *ngIf="selectedpharmacie" id="sizedModalSm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Supprimer le pharmacie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body m-3">
+                <p class="mb-0">Etes vous sûr(e) de vouloir supprimer {{selectedpharmacie.nom_client}}.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">annuler</button>
+                <button type="button"  (click)="deleteSeller()" class="btn btn-danger">supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>

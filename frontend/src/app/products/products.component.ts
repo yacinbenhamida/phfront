@@ -65,7 +65,9 @@ export class ProductsComponent implements OnInit {
     }
   }
   deleteProduct(){
-
+    if(this.selectedProduct){
+      this.prodServ.delete(this.selectedProduct.id).subscribe((res)=>window.location.reload(),err=>window.location.reload())
+    }
   }
   showPanel(){
     this.modification = false

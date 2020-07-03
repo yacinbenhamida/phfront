@@ -22,8 +22,12 @@ db.sequelize = sequelize;
 db.users = require("./user.model.js")(sequelize, Sequelize);
 db.vehicules = require('./vehicule.model')(sequelize,Sequelize)
 db.produits = require('./produit.model')(sequelize,Sequelize)
+db.clients = require('./client.model')(sequelize,Sequelize)
+db.packs = require('./pack.model')(sequelize,Sequelize)
 // relations
 
 db.users.hasOne(db.vehicules)
 db.vehicules.belongsTo(db.users)
+
+db.clients.belongsTo(db.users,{as : 'delegue'})
 module.exports = db;

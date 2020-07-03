@@ -58,3 +58,21 @@ exports.editProduct = (req,res)=>{
           "Some error occurred while editing a product."
       });
 }
+
+exports.deleteProduct= (req,res) => {
+    if(req.body.id){
+        Produit.destroy({
+          where : {
+            id : req.body.id
+          }
+        }).then(res => {
+          res.status(200).send('done')
+        }).catch(err => {
+          res.status(404).send({
+            message:
+              err.message || "Some error occurred while deleting data."
+          });
+        });
+      }
+      else res.sendStatus(500)
+}

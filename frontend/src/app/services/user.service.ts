@@ -40,6 +40,17 @@ export class UserService {
     }
     return null
   }
+  getAllDeleges(){
+    let user :any = this.getLoggedOn()
+    if(user){
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "JWT "+user.token });
+      let options = { headers: headers };
+      return this.http.get('/api/allDeleges',options)
+    }
+    return null
+  }
   getAllUsers(){
     let user :any = this.getLoggedOn()
     if(user){
