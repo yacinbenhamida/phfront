@@ -25,6 +25,9 @@ import { ProductItemComponent } from './product-item/product-item.component';
 import { PacksComponent } from './packs/packs.component';
 import { ClientPharmaciesComponent } from './client-pharmacies/client-pharmacies.component';
 import { ClientGrossistesComponent } from './client-grossistes/client-grossistes.component';
+import { CommandesComponent } from './commandes/commandes.component';
+import { CommandesHistoriqueComponent } from './commandes-historique/commandes-historique.component';
+import { CommandeProduitItemComponent } from './commande-produit-item/commande-produit-item.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +46,10 @@ import { ClientGrossistesComponent } from './client-grossistes/client-grossistes
     ProductItemComponent,
     PacksComponent,
     ClientPharmaciesComponent,
-    ClientGrossistesComponent
+    ClientGrossistesComponent,
+    CommandesComponent,
+    CommandesHistoriqueComponent,
+    CommandeProduitItemComponent
   ],
   imports: [
     BrowserModule,

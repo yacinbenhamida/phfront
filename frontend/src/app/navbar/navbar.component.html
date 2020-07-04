@@ -31,22 +31,22 @@
                 </a>
             </li>
             <li [ngClass]="isActiveTab('clients')">
-                <a href="#pages" data-toggle="collapse" class="sidebar-link collapsed">
+                <a href="#pages2" data-toggle="collapse" class="sidebar-link collapsed">
                     <i class="align-middle" data-feather="users"></i> <span class="align-middle">Clients</span>
                 </a>
-                <ul id="pages" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                <ul id="pages2" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
                     <li [ngClass]="isActiveTab('/grossite-clients')"><a class="sidebar-link" routerLink="/grossiste-clients">Grossistes</a></li>
                     <li [ngClass]="isActiveTab('/pharmacie-clients')"><a class="sidebar-link" routerLink="/pharmacie-clients">Pharmacies</a></li>
                 </ul>
             </li>
 
-            <li [ngClass]="isActiveTab('fiches')">
+            <li [ngClass]="isActiveTab('commandes')">
                 <a href="#pages" data-toggle="collapse" class="sidebar-link collapsed">
                     <i class="align-middle" data-feather="layout"></i> <span class="align-middle">Commandes</span>
                 </a>
                 <ul id="pages" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                    <li [ngClass]="isActiveTab('/saisie-fiches')"><a class="sidebar-link" routerLink="/saisie-fiches">Saisie</a></li>
-                    <li [ngClass]="isActiveTab('/historique-fiches')"><a class="sidebar-link" routerLink="/historique-fiches">Historique</a></li>
+                    <li [ngClass]="isActiveTab('/saisie-commandes')"><a class="sidebar-link" routerLink="/saisie-commandes">Saisie</a></li>
+                    <li [ngClass]="isActiveTab('/historique-commandes')"><a class="sidebar-link" routerLink="/historique-commandes">Historique</a></li>
                 </ul>
             </li>
 

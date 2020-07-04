@@ -15,7 +15,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.TEXT
         },
         prix : {
-            type: Sequelize.INTEGER
+            type: Sequelize.DOUBLE
         },
         nb_gellules : {
             type: Sequelize.INTEGER

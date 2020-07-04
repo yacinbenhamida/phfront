@@ -24,10 +24,25 @@ db.vehicules = require('./vehicule.model')(sequelize,Sequelize)
 db.produits = require('./produit.model')(sequelize,Sequelize)
 db.clients = require('./client.model')(sequelize,Sequelize)
 db.packs = require('./pack.model')(sequelize,Sequelize)
+db.commandes = require('./commande.model')(sequelize,Sequelize)
+db.commandeproduits = require('./commandeproduit.model')(sequelize,Sequelize)
 // relations
 
 db.users.hasOne(db.vehicules)
 db.vehicules.belongsTo(db.users)
 
 db.clients.belongsTo(db.users,{as : 'delegue'})
+db.commandes.belongsTo(db.clients, {as : 'client'})
+
+// join tbl commande produit
+db.produits.belongsToMany(db.commandes,{
+    through: 'commandeProduit',
+    foreignKey: 'idproduit',
+    otherKey: 'idcommande'
+})
+db.commandes.belongsToMany(db.produits,{
+  through: 'commandeProduit',
+  otherKey: 'idproduit',
+  foreignKey: 'idcommande'
+})
 module.exports = db;
