@@ -6,17 +6,20 @@ module.exports = (sequelize, Sequelize) => {
             autoIncrement: true
         },
         prix_total : {
-            type : Sequelize.INTEGER
+            type : Sequelize.DOUBLE
         },
         total_remise : {
-            type : Sequelize.INTEGER
+            type : Sequelize.DOUBLE
         },
         type : {
             type: Sequelize.ENUM,
             values: ['direct', 'grossiste']
         },
-        createdAt: {type : Sequelize.DATE , default : Date.now()},
-        updatedAt: {type : Sequelize.DATE, default : null},
+        nb_produits : {
+            type : Sequelize.DOUBLE
+        },
+        createdAt: {type : Sequelize.DATEONLY , default : Date.now()},
+        updatedAt: {type : Sequelize.DATEONLY, default : null},
     });
     return Commande;
 };

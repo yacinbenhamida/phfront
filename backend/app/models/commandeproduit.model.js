@@ -13,7 +13,8 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
         },
         quantite : {type: Sequelize.INTEGER},
-        remise : {type: Sequelize.INTEGER},
+        remise : {type: Sequelize.DOUBLE},
+        prixTTC : { type : Sequelize.DOUBLE},
         createdAt: {type : Sequelize.DATE , default : Date.now()},
         updatedAt: {type : Sequelize.DATE, default : null},
     });

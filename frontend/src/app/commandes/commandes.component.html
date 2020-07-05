@@ -15,7 +15,7 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label>client</label>
-                                <select class="form-control select2" [(ngModel)]="targetClient" name="cli" data-toggle="select2">
+                                <select class="form-control select2" [(ngModel)]="targetClient" required name="cli" data-toggle="select2">
                                     <option selected disabled value="0">Veuillez Selectionner un client</option>
                                     <option *ngFor="let c of clients " [ngValue]="c">
                                         <span *ngIf="c.type_client=='grossiste'" class="badge badge-pill badge-secondary">Grossiste</span>
@@ -27,7 +27,7 @@
 
                             <div class="mb-3" *ngIf="targetClient && targetClient.type_client == 'pharmacie'">
                                 <label>type de vente</label>
-                                <select class="form-control select2"  name="typev" data-toggle="select2">
+                                <select [required]="targetClient.type_client == 'pharmacie'" [(ngModel)]="commandeToAdd.type" class="form-control select2"  name="typev" data-toggle="select2">
                                     <option selected disabled value="0">Veuillez Selectionner un type de vente</option>
                                     <option value="grossiste">vente directe</option>
                                     <option value="direct">vente grossiste</option>
@@ -49,61 +49,66 @@
                             <form [formGroup]="commandeForm" >
                                 <div formArrayName="products">
                             <div class="row" *ngFor="let product of products().controls; let i=index" [formGroupName]="i">                               
-                                <div class="col-12 col-xl-6">
+                                <div class="col-12 col-xl-5">
                                     <div class="form-group">
                                         <label>produit</label>
-                                    <select formControlName="produit" #selectedp class="form-control select2" name="product">
-                                        <option *ngFor="let p of produits" [ngValue]="p.id"> {{p.libelle}} BTE {{p.nb_gellules}}</option>
+                                    <select (change)="red.value && qte.value ? pttc.value = calculRed(selectedp.value,qte.value,red.value):return" formControlName="produit" #selectedp class="form-control select2" name="product">
+                                        <option *ngFor="let p of produits" [ngValue]="p.id"> {{p.libelle}} BTE {{p.nb_gellules}} PU : {{p.prix}}</option>
                                     </select>
                                     </div>
                                 </div>
 
-                                <div class="col-12 col-xl-2">
+                                <div class="col-6 col-xl-2">
                                     <div class="form-group">
                                         <label class="form-label">quantité</label>
                                         <input formControlName="quantite" #qte (change)="red.value && qte.value ? pttc.value = calculRed(selectedp.value,qte.value,red.value):return"  class="form-control" type="number" name="qte" />
                                     </div>
                                 </div>
-                                <div class="col-12 col-xl-2">
+                                <div class="col-6 col-xl-2">
                                     <div class="form-group">
                                         <label class="form-label">remise (%)</label>
-                                        <input formControlName="reduction" (change)="pttc.value = calculRed(selectedp.value,qte.value,red.value)" #red class="form-control" type="number" placeholder="%" name="remise" />
+                                        <input formControlName="reduction" (change)="red.value && qte.value ? pttc.value = calculRed(selectedp.value,qte.value,red.value):return" #red class="form-control" type="number" placeholder="%" name="reduction" />
                                     </div>
                                 </div>
-                                <div class="col-12 col-xl-2">
+                                <div class="col-6 col-xl-2">
                                     <div class="form-group">
                                         <label class="form-label">total TTC</label>
-                                        <input formControlName="prixTTC" #pttc class="form-control" type="number" name="totalTTCp" />
+                                        <input formControlName="prixTTC" #pttc class="form-control" type="number" name="prixTTC" />
+                                    </div>
+                                </div>
+                                <div class="col-6 col-xl-1">
+                                    <div class="form-group">                                        
+                                    <button (click)="removeProduct(i)" class="btn btn-white mt-4">X</button>
                                     </div>
                                 </div>
                                 <hr>
                             </div>
                             </div>
-                            <div class="row" *ngIf="estimations">
-                                <div class="col-12 col-xl-6">
+                            <div class="row" *ngIf="estimations && totalQte > 0 && totalReduction && totalTTC > 0">
+                                <div class="col-0 col-xl-6">
                                     <div class="form-group">
                                           
                                     </div>
                                 </div>
 
-                                <div class="col-12 col-xl-2">
+                                <div class="col-4 col-xl-2">
                                     <div class="form-group">
                                         <label class="form-label">{{totalQte}} produits</label>
                                     </div>
                                 </div>
-                                <div class="col-12 col-xl-2">
+                                <div class="col-4 col-xl-2">
                                     <div class="form-group">
                                         <label class="form-label"> {{totalReduction}} % de remise</label>
                                     </div>
                                 </div>
-                                <div class="col-12 col-xl-2">
+                                <div class="col-4 col-xl-2">
                                     <div class="form-group">
                                         <label class="form-label">total TTC : {{totalTTC}} TND</label>
                                     </div>
                                 </div>
                             </div>
                                 <div class="form-row mt-3 float-right">
-                                <input value="soumettre" type="submit" class="btn btn-primary" (click)="submit()">
+                                <input value="soumettre" type="submit" [disabled]="!targetClient || commandeForm.invalid" class="btn btn-primary" (click)="submit()">
                                 <button class="btn btn-danger ml-2">annuler</button>
                             </div>
                         </form>

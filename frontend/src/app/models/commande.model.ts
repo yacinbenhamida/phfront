@@ -6,6 +6,7 @@ export interface Commande{
     total_remise : number
     type : string
     client : Client
+    nb_produits : number
     createdAt:Date
     updatedAt: Date
 }

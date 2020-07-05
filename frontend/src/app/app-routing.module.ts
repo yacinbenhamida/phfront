@@ -12,12 +12,13 @@ import { PacksComponent } from './packs/packs.component';
 import { ClientPharmaciesComponent } from './client-pharmacies/client-pharmacies.component';
 import { ClientGrossistesComponent } from './client-grossistes/client-grossistes.component';
 import { CommandesComponent } from './commandes/commandes.component';
+import { CommandesHistoriqueComponent } from './commandes-historique/commandes-historique.component';
 
 
 const routes: Routes = [
   {path : 'dashboard' , component : DashboardComponent , canActivate : [AuthGuardService]},
   {path : 'saisie-commandes', component : CommandesComponent, canActivate : [AuthGuardService]},
-  {path : 'historique-commandes', component : HistoriqueFichesComponent, canActivate : [AuthGuardService]},
+  {path : 'historique-commandes', component : CommandesHistoriqueComponent, canActivate : [AuthGuardService]},
   {path : 'profile', component : ProfileComponent, canActivate : [AuthGuardService]},
   {path : 'users', component : AdminUsersComponent, canActivate : [AuthGuardService]},
   {path : 'products', component : ProductsComponent, canActivate : [AuthGuardService]},

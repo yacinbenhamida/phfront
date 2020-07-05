@@ -4,6 +4,8 @@ const auth = require("../controllers/auth.controller")
 const cars = require("../controllers/vehicule.controller")
 const products = require("../controllers/produit.controller")
 const clients = require('../controllers/client.controller')
+const commande = require('../controllers/commande.controller')
+
 module.exports = app => {
   app.post('/login', auth.login);
   app.use('/logout', passport.authenticate('jwt', {
@@ -55,4 +57,10 @@ module.exports = app => {
   app.use('/deleteClient', passport.authenticate('jwt', {
     session: false
   })).post('/deleteClient', clients.deleteClient);
+  app.use('/addCommande', passport.authenticate('jwt', {
+    session: false
+  })).post('/addCommande', commande.addCommande);
+  app.use('/getAllCommandes', passport.authenticate('jwt', {
+    session: false
+  })).get('/getAllCommandes', commande.getAllCommandes);
 };

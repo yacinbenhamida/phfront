@@ -6,6 +6,8 @@ import { CommandeProduit } from '../models/commandeproduit.model';
 import { CommandeProduitItemComponent } from '../commande-produit-item/commande-produit-item.component';
 import { ProductService } from '../services/product.service';
 import { Produit } from '../models/produit.model';
+import { Commande } from '../models/commande.model';
+import { CommandeService } from '../services/commande.service';
 
 @Component({
   selector: 'app-commandes',
@@ -22,8 +24,10 @@ export class CommandesComponent implements OnInit {
   totalReduction : number = 0
   totalQte : number = 0
   estimations : boolean = false
+  commandeToAdd : Commande = {} as Commande
   constructor(private cliserv:ClientService,
-    private fb:FormBuilder,private prodserv:ProductService) { 
+    private fb:FormBuilder,private prodserv:ProductService,
+    private comserv:CommandeService) { 
       this.commandeForm = this.fb.group({
         products: this.fb.array([]) ,
       });
@@ -47,7 +51,6 @@ export class CommandesComponent implements OnInit {
     return this.fb.group({
       produit : new FormControl({},Validators.required),
       quantite: new FormControl({},Validators.required),
-      prix: new FormControl({},Validators.required),
       reduction : new FormControl({value : '0'},Validators.required),
       prixTTC : new FormControl({value : '0',disabled : true},Validators.required)
     })
@@ -59,15 +62,26 @@ export class CommandesComponent implements OnInit {
    
   removeProduct(i:number) {
     this.products().removeAt(i);
+    this.estimationTotal()
   }
   
   submit(){
-    console.log(this.products())
+    console.log(this.products().value)
+    if(this.products() && this.commandeForm.valid){
+      this.commandeToAdd.prix_total = this.totalTTC
+      this.commandeToAdd.total_remise = this.totalReduction
+      this.commandeToAdd.nb_produits = this.totalQte
+      this.commandeToAdd.client = this.targetClient
+      this.comserv.add(this.commandeToAdd,this.products().value).subscribe(data=>{
+        window.location.reload()
+      })
+    } 
+   
   }
   calculRed(selectedp,qte,red){
       let id = Number(selectedp.substring(selectedp.indexOf(':')+1,selectedp.length))
       let produit:Produit = this.produits.filter(x=>x.id===id)[0]
-      const nprix = (produit.prix *100) - (produit.prix*red)
+      const nprix = Number((produit.prix) - (produit.prix*(red/100)))
       this.estimationTotal()
       return  Number(nprix * qte)
   }
@@ -82,7 +96,7 @@ export class CommandesComponent implements OnInit {
       this.totalReduction += Number(element.reduction)
       nbprod++
       let produitu:Produit = this.produits.filter(x=>x.id===element.produit)[0]
-      const nprixu = (produitu.prix *100) - (produitu.prix*element.reduction)
+      const nprixu = Number(produitu.prix  - (produitu.prix*(element.reduction/100)))
       this.totalTTC += Number(nprixu * element.quantite)
     });
     this.totalReduction = (Number(this.totalReduction) / nbprod)
