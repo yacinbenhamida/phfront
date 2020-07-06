@@ -3,10 +3,11 @@ import { Commande } from './commande.model';
 
 export interface CommandeProduit{
     id: number,
-    produit:Produit,
+    produits:Produit[],
     commande : Commande,
     quantite : number,
     remise : number,
+    prixTTC : number,
     createdAt: Date,
     updatedAt: Date,
 }

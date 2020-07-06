@@ -28,7 +28,7 @@ exports.addCommande = (req,res) => {
                             prixTTC : element.reduction ? ((prod.prix) - (prod.prix*(element.reduction/100)))* element.quantite : 0
                         }
                         CommandeProduit.create(commande_produit,{ w: 1 }, { returning: true }).then(cp=>{
-                            if(cp) res.status(200).json(cp)
+                            if(cp) res.status(200).send(cp)
                             else res.status(404).send({message : 'failed to add products'})       
                         })
                     } 
@@ -45,5 +45,39 @@ exports.addCommande = (req,res) => {
 exports.getAllCommandes = (req,res) => {
     Commande.findAll({include: ['client']}).then(result=>{
         res.send(result)
+    })
+}
+exports.getProduitsOfCommande = (req,res)=>{
+    const commandeId = req.body.commande
+    CommandeProduit.findAll({where : {idcommande : commandeId }, include: [{
+        model: Produit,
+        as: 'produits',
+        required: false,
+        attributes: ['id', 'libelle','prix','nb_gellules'],
+        through: {
+          model: CommandeProduit,
+          as: 'commandeProduit',
+          attributes: ['quantite','remise','prixTTC'],
+        }
+      }]}).then(cmd=>{
+        res.send(cmd)
+    })
+}
+exports.deleteCommande = (req,res) => {
+    const commandeId = req.body.commandeId
+    Commande.findOne({where : {id : commandeId}}).then(cmd=>{
+        if(cmd){
+            const products = cmd.getProduits()
+            cmd.removeProduits(products)
+            Commande.destroy({
+                where : {
+                    id : commandeId
+                }
+            }).then(exec=>{
+                if(exec) res.status(200)
+                else res.status(403)
+            })
+        }
+        else res.status(404)
     })
 }

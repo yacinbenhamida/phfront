@@ -63,4 +63,10 @@ module.exports = app => {
   app.use('/getAllCommandes', passport.authenticate('jwt', {
     session: false
   })).get('/getAllCommandes', commande.getAllCommandes);
+  app.use('/getCommandesProducts', passport.authenticate('jwt', {
+    session: false
+  })).post('/getCommandesProducts', commande.getProduitsOfCommande);
+  app.use('/deleteCommande', passport.authenticate('jwt', {
+    session: false
+  })).post('/deleteCommande', commande.deleteCommande);
 };

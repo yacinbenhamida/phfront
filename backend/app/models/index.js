@@ -45,4 +45,10 @@ db.commandes.belongsToMany(db.produits,{
   otherKey: 'idproduit',
   foreignKey: 'idcommande'
 })
+db.commandeproduits.belongsToMany(db.produits, {
+  through: 'commandeProduit',
+  as: 'produits',
+  foreignKey: 'id',
+  otherKey: 'idproduit'
+});
 module.exports = db;

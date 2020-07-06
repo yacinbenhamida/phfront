@@ -24,6 +24,17 @@ export class CommandeService {
     }
     return null
   }
+  getProduitsOfCommande(id:number){
+    let connnectedUser :any = this.userService.getLoggedOn()
+    if(id  && connnectedUser){
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "JWT "+connnectedUser.token });
+      let options = { headers: headers };
+      return this.http.post('/api/getCommandesProducts',{commande : id },options)
+    }
+    return null
+  }
   edit(client:Client){
     let connnectedUser :any = this.userService.getLoggedOn()
     if(client && connnectedUser){
@@ -53,7 +64,7 @@ export class CommandeService {
         'Content-Type': 'application/json',
         'Authorization': "JWT "+connnectedUser.token });
       let options = { headers: headers };
-      return this.http.post('/api/deleteClient',{id : id},options)
+      return this.http.post('/api/deleteCommande',{commandeId : id},options)
     }
     return null
   }
