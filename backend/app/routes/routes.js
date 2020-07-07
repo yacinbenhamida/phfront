@@ -5,7 +5,7 @@ const cars = require("../controllers/vehicule.controller")
 const products = require("../controllers/produit.controller")
 const clients = require('../controllers/client.controller')
 const commande = require('../controllers/commande.controller')
-
+const packs = require('../controllers/pack.controller')
 module.exports = app => {
   app.post('/login', auth.login);
   app.use('/logout', passport.authenticate('jwt', {
@@ -69,4 +69,10 @@ module.exports = app => {
   app.use('/deleteCommande', passport.authenticate('jwt', {
     session: false
   })).post('/deleteCommande', commande.deleteCommande);
+  app.use('/addPack', passport.authenticate('jwt', {
+    session: false
+  })).post('/addPack', packs.addPack);
+  app.use('/getPacks', passport.authenticate('jwt', {
+    session: false
+  })).get('/getPacks', packs.getAllPacks);
 };

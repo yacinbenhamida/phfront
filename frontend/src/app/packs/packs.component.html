@@ -1,1 +1,292 @@
-<p>packs works!</p>
+<main class="content">
+    <div class="container-fluid p-0">
+        <button *ngIf="!showForm" (click)="showPanel()" class="btn btn-primary float-right mt-n1"><i
+                class="fas fa-plus"></i> Nouveau pack</button>
+        <button *ngIf="showForm" (click)="hidePanel()" class="btn btn-danger float-right mt-n1"><i
+                class="fas fa-times"></i> Annuler</button>
+        <h1 class="h3 mb-3">Packs</h1>
+        <div class="row" *ngIf="showForm">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Ajouter un pack</h5>
+                        <!--    alert message    -->
+                        <div *ngIf="addError" class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <div class="alert-message">
+                                <strong>Ajout echoué</strong> Veuillez réessayer ultérieurement, ou vérifiez vos
+                                champs.
+                            </div>
+                        </div>
+                        <!--end alert-->
+                    </div>
+                    <div class="card-body">
+                        <form #grForm="ngForm">
+                            <div class="row">
+                                <div class="col-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label>Type de packs</label>
+                                        <select class="form-control select2" [(ngModel)]="packToadd.type_pack"
+                                            name="type_pack" required>
+                                            <option value="0" disabled selected>Veuillez choisir un type de pack
+                                            </option>
+                                            <option value="panache">Panaché </option>
+                                            <option value="normal">Normale</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="packToadd && packToadd.type_pack == 'panache'">
+                                        <strong>Pack panaché</strong>
+                                        <div class="form-row mt-2">
+                                            <div class="form-group col-md-6">
+                                                <label>intitulé du pack</label>
+                                                <input [(ngModel)]="packToadd.nom_pack" class="form-control"
+                                                    type="text" placeholder="pack panaché 1" name="nom_pack" />
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>prix pack</label>
+                                                <input [(ngModel)]="packToadd.prix_total" class="form-control"
+                                                    type="number" placeholder="TND." name="prix_pack" />
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>pourcentage unité gratuite</label>
+                                                <input [(ngModel)]="packToadd.pourcentage_unite_gratuites_grossiste"
+                                                    class="form-control" type="number" placeholder="%" name="p_vg" />
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Valeur unité gratuite TTC</label>
+                                                <input [(ngModel)]="packToadd.valeur_unite_gratuites_grossiste_ttc"
+                                                    class="form-control" type="number" placeholder="TND."
+                                                    name="p_v_ttc" />
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>pourcentage unité gratuite (VD)</label>
+                                                <input [(ngModel)]="packToadd.pourcentage_unite_gratuites_vd"
+                                                    class="form-control" type="number" placeholder="%" name="p_vd" />
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Valeur unité gratuite TTC(VD)</label>
+                                                <input [(ngModel)]="packToadd.valeur_unite_gratuites_vd"
+                                                    class="form-control" type="number" placeholder="TND."
+                                                    name="p_vd_ttc" />
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>valeur bon d'achat</label>
+                                                <input [(ngModel)]="packToadd.valeur_bon_achat" class="form-control"
+                                                    type="number" placeholder="TND." name="bon_achat" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="packToadd && packToadd.type_pack == 'normal'">
+                                        <strong>pack normal</strong> &nbsp;
+                                        <button class="btn btn-primary mt-3" *ngIf="packToadd.nom_pack" (click)="addProduct()">Ajouter produit</button>
+
+                                        <div class="form-row mt-2">
+                                        <div class="form-group col-md-6">
+                                            <label>intitulé du pack</label>
+                                            <input [(ngModel)]="packToadd.nom_pack" class="form-control"
+                                                type="text" placeholder="pack hiver" name="nom_pack" />
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>valeur pack TTC </label>
+                                            <input [(ngModel)]="packToadd.prix_total" class="form-control"
+                                                type="number" placeholder="TND." name="prix_p_tot" />
+                                        </div>
+                                        
+                                    </div>
+                                    <form [formGroup]="packForm" >
+                                    <div formArrayName="products">
+                                    <div class="row" *ngFor="let product of products().controls; let i=index" [formGroupName]="i">                               
+                                        <div class="col-6 col-xl-4">
+                                            <div class="form-group">
+                                                <label>produit</label>
+                                            <select  (change)="qte.value && selectedp.value && packToadd.prix_total? pttc.value = loadPrice(selectedp.value,qte.value,i):pttc.value = 0" formControlName="produit" #selectedp class="form-control select2" name="product">
+                                                <option *ngFor="let p of produits" [ngValue]="p.id"> {{p.libelle}} BTE {{p.nb_gellules}} PU : {{p.prix}}</option>
+                                            </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-xl-3">
+                                            <div class="form-group">
+                                                <label class="form-label">prix total TTC</label>
+                                                <input formControlName="prixUnitaire" #pttc class="form-control" type="number" name="prixUnitaire" />
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-xl-2">
+                                            <div class="form-group">
+                                                <label class="form-label">quantité</label>
+                                                <input (keyup)="qte.value && selectedp.value ? pttc.value = loadPrice(selectedp.value,qte.value,i):pttc.value = 0" formControlName="quantite" #qte  class="form-control" type="number" name="qte" />
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-xl-1">
+                                            <div class="form-group">                                        
+                                            <button (click)="removeProduct(i)" class="btn btn-white mt-4">X</button>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                    </div>
+                                </form>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Autres Remarques</label>
+                                        <textarea class="form-control" rows="2"></textarea>
+                                    </div>
+                                    <div class="form-row mt-3 float-right ">
+                                        <div>
+                                            <button type="submit" [disabled]="grForm.invalid" (click)="submit(grForm)"
+                                                class="btn btn-primary btn-lg ">Enregistrer</button>
+                                            <button type="reset"
+                                                class="btn btn-danger btn-lg ml-2">Réinitialiser</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-actions float-right">
+                            <div class="dropdown show">
+                                <a href="#" data-toggle="dropdown" data-display="static">
+                                    <i class="align-middle" data-feather="more-horizontal"></i>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="card-title mb-0">liste des packs</h5>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatables-clients" datatable [dtOptions]="options" [dtTrigger]="trigger"
+                            class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Company</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><img src="img/avatars/avatar.jpg" width="32" height="32"
+                                            class="rounded-circle my-n1" alt="Avatar"></td>
+                                    <td>Garrett Winters</td>
+                                    <td>Good Guys</td>
+                                    <td>garrett@winters.com</td>
+                                    <td><span class="badge badge-success">Active</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-actions float-right">
+                            <div class="dropdown show">
+                                <a href="#" data-toggle="dropdown" data-display="static">
+                                    <i class="align-middle" data-feather="more-horizontal"></i>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="card-title mb-0">Angelica Ramos</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row no-gutters">
+                            <div class="col-sm-3 col-xl-12 col-xxl-3 text-center">
+                                <img src="img/avatars/avatar-3.jpg" width="64" height="64" class="rounded-circle mt-2"
+                                    alt="Angelica Ramos">
+                            </div>
+                            <div class="col-sm-9 col-xl-12 col-xxl-9">
+                                <strong>About me</strong>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore
+                                    magna aliqua.</p>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm my-2">
+                            <tbody>
+                                <tr>
+                                    <th>Name</th>
+                                    <td>Angelica Ramos</td>
+                                </tr>
+                                <tr>
+                                    <th>Company</th>
+                                    <td>The Wiz</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>angelica@ramos.com</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone</th>
+                                    <td>+1234123123123</td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td><span class="badge badge-success">Active</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <hr />
+
+                        <strong>Activity</strong>
+
+                        <ul class="timeline mt-2 mb-0">
+                            <li class="timeline-item">
+                                <strong>Signed out</strong>
+                                <span class="float-right text-muted text-sm">30m ago</span>
+                                <p>Nam pretium turpis et arcu. Duis arcu tortor, suscipit...</p>
+                            </li>
+                            <li class="timeline-item">
+                                <strong>Created invoice #1204</strong>
+                                <span class="float-right text-muted text-sm">2h ago</span>
+                                <p>Sed aliquam ultrices mauris. Integer ante arcu...</p>
+                            </li>
+                            <li class="timeline-item">
+                                <strong>Discarded invoice #1147</strong>
+                                <span class="float-right text-muted text-sm">3h ago</span>
+                                <p>Nam pretium turpis et arcu. Duis arcu tortor, suscipit...</p>
+                            </li>
+                            <li class="timeline-item">
+                                <strong>Signed in</strong>
+                                <span class="float-right text-muted text-sm">3h ago</span>
+                                <p>Curabitur ligula sapien, tincidunt non, euismod vitae...</p>
+                            </li>
+                            <li class="timeline-item">
+                                <strong>Signed up</strong>
+                                <span class="float-right text-muted text-sm">2d ago</span>
+                                <p>Sed aliquam ultrices mauris. Integer ante arcu...</p>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
