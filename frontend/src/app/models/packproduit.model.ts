@@ -11,4 +11,5 @@ export interface PackProduit{
     isfree : boolean,
     createdAt:Date,
     updatedAt: Date,
+    produits_packs : Produit[]
 }

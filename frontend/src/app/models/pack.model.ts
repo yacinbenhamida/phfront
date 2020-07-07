@@ -11,7 +11,7 @@ export interface Pack{
     remise_total_comptant : number,
     remise_total_dans_un_mois : number,
     prix_total : number
-    remarques : string,
+    times_sold : number
     createdAt: Date
     updatedAt: Date
 }

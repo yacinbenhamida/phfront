@@ -20,26 +20,29 @@ exports.addCommande = (req,res) => {
             produits.forEach(element => {
                 Produit.findOne({where : {id : element.produit}}).then(prod=>{
                     if(prod){
+                        let pttc = 0
+                        if(element.reduction){
+                            pttc = ((prod.prix) - (prod.prix*(element.reduction/100)))* element.quantite
+                        }
+                        else pttc = prod.prix * element.quantite
                         const commande_produit = {
                             idproduit : prod.id,
                             idcommande : cmd.id,
                             quantite : element.quantite ? element.quantite : 0,
                             remise : element.reduction? element.reduction : 0,
-                            prixTTC : element.reduction ? ((prod.prix) - (prod.prix*(element.reduction/100)))* element.quantite : 0
+                            prixTTC : pttc
                         }
                         CommandeProduit.create(commande_produit,{ w: 1 }, { returning: true }).then(cp=>{
-                            if(cp) res.status(200).send(cp)
-                            else res.status(404).send({message : 'failed to add products'})       
+                            if(cp) console.log({message : 'added products'})
+                            else console.log({message : 'failed to add products'})       
                         })
                     } 
-                    else res.status(404).send({message : 'no products'})                   
                 })
             });
         }
-        else res.status(404).send({message : 'no commande'})            
     })
     }
-    else res.status(404).send({message : 'nothing'})            
+    else res.status(404)        
     
 }
 exports.getAllCommandes = (req,res) => {

@@ -39,8 +39,9 @@ module.exports = (sequelize, Sequelize) => {
         remise_total_dans_un_mois : {
             type: Sequelize.INTEGER,
         },
-        remarques : {
-            type: Sequelize.TEXT
+        times_sold : {
+            type: Sequelize.INTEGER,
+            default : 0
         },
         createdAt: {type : Sequelize.DATE , default : Date.now()},
         updatedAt: {type : Sequelize.DATE, default : null},

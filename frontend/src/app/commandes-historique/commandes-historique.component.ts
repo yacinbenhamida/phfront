@@ -17,6 +17,7 @@ export class CommandesHistoriqueComponent implements OnInit {
   trigger: Subject<Commande> = new Subject();
   detailsCommande : CommandeProduit [] = []
   selectedCommande : Commande
+  isPrinting : boolean = false
   ngOnInit() {
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -41,5 +42,16 @@ export class CommandesHistoriqueComponent implements OnInit {
     this.comserv.delete(c.id).subscribe(()=>{
       window.location.reload()
     })
+  }
+  printPage(){
+    this.isPrinting = true
+    document.getElementById('x').style.display = "none"
+    document.getElementById('imp').style.display = "none"
+    let printContents = document.getElementById('print').innerHTML;
+     let originalContents = document.body.innerHTML;
+     document.body.innerHTML = printContents;
+     window.print();
+     document.body.innerHTML = originalContents;
+     window.location.reload()
   }
 }

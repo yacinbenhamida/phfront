@@ -8,6 +8,9 @@ import { ProductService } from '../services/product.service';
 import { Produit } from '../models/produit.model';
 import { Commande } from '../models/commande.model';
 import { CommandeService } from '../services/commande.service';
+import { Pack } from '../models/pack.model';
+import { PackService } from '../services/pack.service';
+import { PackProduit } from '../models/packproduit.model';
 
 @Component({
   selector: 'app-commandes',
@@ -24,10 +27,12 @@ export class CommandesComponent implements OnInit {
   totalReduction : number = 0
   totalQte : number = 0
   estimations : boolean = false
+  selectedPack : Pack
+  packs : Pack[] = []
   commandeToAdd : Commande = {} as Commande
   constructor(private cliserv:ClientService,
     private fb:FormBuilder,private prodserv:ProductService,
-    private comserv:CommandeService) { 
+    private comserv:CommandeService, private packserv:PackService) { 
       this.commandeForm = this.fb.group({
         products: this.fb.array([]) ,
       });
@@ -41,6 +46,7 @@ export class CommandesComponent implements OnInit {
       this.prodserv.getAll().subscribe((resl:Produit[])=>{
         this.produits = resl
       })
+      this.packserv.getAll().subscribe((pc:Pack[])=>{this.packs = pc})
     })
   }
   products() : FormArray {
@@ -60,6 +66,14 @@ export class CommandesComponent implements OnInit {
     this.products().push(this.newProduct());
   }
    
+  addProductWithValue(prod,qte,red,prix) {
+    this.products().push(this.fb.group({
+      produit : new FormControl(prod.id,Validators.required),
+      quantite: new FormControl(qte,Validators.required),
+      reduction : new FormControl(red,Validators.required),
+      prixTTC : new FormControl({value : prix,disabled : true},Validators.required)
+    }));
+  }
   removeProduct(i:number) {
     this.products().removeAt(i);
     this.estimationTotal()
@@ -72,8 +86,12 @@ export class CommandesComponent implements OnInit {
       this.commandeToAdd.total_remise = this.totalReduction
       this.commandeToAdd.nb_produits = this.totalQte
       this.commandeToAdd.client = this.targetClient
-      this.comserv.add(this.commandeToAdd,this.products().value).subscribe(data=>{
-        window.location.reload()
+      this.comserv.add(this.commandeToAdd,this.products().value).subscribe(()=>{
+        if(this.selectedPack){
+          this.packserv.updatePackSoldCount(this.selectedPack.id).subscribe(()=>{
+            window.location.reload()
+          })
+        }else window.location.reload()
       })
     } 
    
@@ -92,13 +110,36 @@ export class CommandesComponent implements OnInit {
     this.totalTTC = 0
     let nbprod = 0
     this.commandeForm.value.products.forEach(element => {
-      this.totalQte += Number(element.quantite)
-      this.totalReduction += Number(element.reduction)
+      this.totalQte += element.quantite ? Number(element.quantite) : 0
+      this.totalReduction +=  element.reduction ? Number(element.reduction) : 0
       nbprod++
       let produitu:Produit = this.produits.filter(x=>x.id===element.produit)[0]
       const nprixu = Number(produitu.prix  - (produitu.prix*(element.reduction/100)))
       this.totalTTC += Number(nprixu * element.quantite)
     });
     this.totalReduction = (Number(this.totalReduction) / nbprod)
+  }
+  loadPackage(){
+    if(this.targetClient.type_client == 'pharmacie'){
+      this.packserv.getProdPacks(this.selectedPack.id).subscribe((data:PackProduit[])=>{
+        if(data){
+         this.products().controls = []
+         data.forEach(p=>{
+           this.addProductWithValue(p.produits_packs[0],p.quantite,0,Number(p.produits_packs[0].prix * p.quantite))
+         })
+        }
+         this.estimationTotal()
+         this.totalTTC = this.selectedPack.prix_total
+       })
+    }
+  }
+  verifyPack(){
+    if(this.targetClient.type_client == 'grossiste' && this.products().controls.length > 0){
+      this.products().controls = []
+      this.estimations = false   
+      this.totalQte =0
+      this.totalReduction = 0
+      this.totalTTC = 0
+    }
   }
 }

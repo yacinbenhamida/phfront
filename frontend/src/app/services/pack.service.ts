@@ -34,6 +34,28 @@ export class PackService {
     }
     return null
   }
+  getProdPacks(id:number){
+    let connnectedUser :any = this.userService.getLoggedOn()
+    if(connnectedUser){
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "JWT "+connnectedUser.token });
+      let options = { headers: headers };
+      return this.http.post('/api/getProdPacks',{pack : id},options)
+    }
+    return null
+  }
+  updatePackSoldCount(id:number){
+    let connnectedUser :any = this.userService.getLoggedOn()
+    if(connnectedUser){
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "JWT "+connnectedUser.token });
+      let options = { headers: headers };
+      return this.http.post('/api/incrementPackSold',{pack : id},options)
+    }
+    return null
+  }
   getAll(){
     let connnectedUser :any = this.userService.getLoggedOn()
     if(connnectedUser){
@@ -52,7 +74,7 @@ export class PackService {
         'Content-Type': 'application/json',
         'Authorization': "JWT "+connnectedUser.token });
       let options = { headers: headers };
-      return this.http.post('/api/deleteProduct',{id : id},options)
+      return this.http.post('/api/deletePack',{id : id},options)
     }
     return null
   }

@@ -11,28 +11,71 @@ exports.addPack = (req, res)=> {
                     Produit.findAll({ where : {id : element.produit}}).then(produit=>{
                         if(produit){
                             const prodpack = {
-                                idpack : pack.id,
-                                idproduit : produit.id,
+                                idpack : respack.id,
+                                id_produit : element.produit,
                                 quantite : element.quantite,
-                                isfree : element.isfree,
+                                isfree : element.gratuit,
                             }
                             PackProduit.create(prodpack,{w:1}, { returning: true }).then(
                                 finalresult=> {
-                                    if(finalresult) res.send('inserted custom packs')
+                                    if(finalresult) console.log('inserted product pack')
                                 }
                             )
                         }
-                        else res.send('no products')
                     })
                 });  
-            }else res.send('no pack')
+            }else res.send('no packs , must be simple pack')
         })
     }
-    else res.send('you forgot eveything')
+    else res.status(405)
 }
-
+exports.getProductsOfPack = (req,res) => {
+    const packId = req.body.pack
+    if(packId){
+        PackProduit.findAll({where : {idpack : packId}, include: [{
+            model: Produit,
+            as: 'produits_packs',
+            required: false,
+            attributes: ['id', 'libelle','prix','nb_gellules'],
+            through: {
+              model: PackProduit,
+              as: 'packproduit',
+              attributes: ['quantite','createdAt','isfree'],
+            }
+          }]}).then(packs=>{
+            res.send(packs)
+        })
+    }else res.status(404)
+}
+exports.incrmentPackSold = (req,res)=>{
+    const packId = req.body.pack
+    if(packId){
+        PackProduit.findOne({where : {idpack : packId}}).then(pack=>{
+            if(pack){
+                Pack.increment('times_sold', { by: 1, where: { id: pack.id }}).then(d=>res.status(200))
+            }
+        })
+}
+else res.status(404)
+}
 exports.getAllPacks = (req,res)=>{
     Pack.findAll().then(result=>{
         res.send(result)
+    })
+}
+
+exports.deletePack = (req,res) => {
+    const packId = req.body.packId
+    Pack.findOne({where : {id : packId}}).then(cmd=>{
+        if(cmd){
+            Pack.destroy({
+                where : {
+                    id : packId
+                }
+            }).then(exec=>{
+                if(exec) res.status(200)
+            })
+        }
+        else res.status(404)
     })
 }

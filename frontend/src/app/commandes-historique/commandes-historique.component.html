@@ -1,5 +1,5 @@
 <main class="content">
-    <div class="container-fluid p-0" *ngIf="detailsCommande.length > 0 && selectedCommande">
+    <div id="print" class="container-fluid p-0" *ngIf="detailsCommande.length > 0 && selectedCommande">
  
         <h1 class="h3 mb-3">Facture</h1>
 
@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-body m-sm-3 m-md-5">
                         <div class="float-right">
-                            <button class="btn btn-danger" (click)="detailsCommande = []">X</button>
+                            <button class="btn btn-danger" (click)="detailsCommande = []" id="x" *ngIf="isPrinting == false">X</button>
                         </div>
                         <div class="mb-4">
                            <span *ngIf="selectedCommande.client.type_client == 'pharmacie'">Facture au compte de la pharmacie <strong>{{selectedCommande.client.nom_client}}</strong></span>
@@ -110,7 +110,7 @@
                                 Devis approximatif, sauf erreur ou omission de notre part.
                             </p>
 
-                            <a href="#" class="btn btn-primary">
+                            <a id="imp" *ngIf="isPrinting == false" (click)="printPage()" class="btn btn-primary">
                                 Imprimer
                             </a>
                         </div>

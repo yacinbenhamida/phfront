@@ -51,7 +51,8 @@ db.commandeproduits.belongsToMany(db.produits, {
   through: 'commandeProduit',
   as: 'produits',
   foreignKey: 'id',
-  otherKey: 'idproduit'
+  otherKey: 'idproduit',
+  unique : false
 });
 
 // join tbl pack produit
@@ -60,19 +61,20 @@ db.commandeproduits.belongsToMany(db.produits, {
 db.packs.belongsToMany(db.produits,{
   through: 'packproduit',
   foreignKey: 'idpack',
-  otherKey: 'idproduit'
+  otherKey: 'id_produit',
 })
 
 db.produits.belongsToMany(db.packs,{
   through: 'packproduit',
-  foreignKey: 'idproduit',
+  foreignKey: 'id_produit',
   otherKey: 'idpack'
 })
 db.packsproduits.belongsToMany(db.produits, {
   through: 'packproduit',
-  as: 'produits',
-  foreignKey: 'idproduit',
-  otherKey: 'idpack'
+  as: 'produits_packs',
+  foreignKey: 'id',
+  otherKey: 'id_produit',
+  unique : false
 });
 
 module.exports = db;

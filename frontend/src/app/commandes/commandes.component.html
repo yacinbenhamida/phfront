@@ -15,7 +15,7 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label>client</label>
-                                <select class="form-control select2" [(ngModel)]="targetClient" required name="cli" data-toggle="select2">
+                                <select class="form-control select2" [(ngModel)]="targetClient" (change)="verifyPack()" required name="cli" data-toggle="select2">
                                     <option selected disabled value="0">Veuillez Selectionner un client</option>
                                     <option *ngFor="let c of clients " [ngValue]="c">
                                         <span *ngIf="c.type_client=='grossiste'" class="badge badge-pill badge-secondary">Grossiste</span>
@@ -33,7 +33,13 @@
                                     <option value="direct">vente grossiste</option>
                                 </select>
                             </div>
-
+                            <div class="mb-3" *ngIf="targetClient && targetClient.type_client == 'pharmacie' && commandeToAdd.type">
+                                <label>Choisir un Pack</label>
+                                <select  [(ngModel)]="selectedPack" (change)="loadPackage()"  class="form-control select2"  name="pack">
+                                    <option selected disabled value="0">Veuillez Selectionner un pack</option>
+                                    <option *ngFor="let p of packs" [ngValue]="p">{{p.nom_pack}}</option>
+                                </select>
+                            </div>
                             <div>
                             </div>
                         </div>
@@ -84,10 +90,10 @@
                                 <hr>
                             </div>
                             </div>
-                            <div class="row" *ngIf="estimations && totalQte > 0 && totalReduction && totalTTC > 0">
+                            <div class="row" *ngIf="estimations && totalQte >= 0 && totalReduction >=0 && totalTTC >= 0">
                                 <div class="col-0 col-xl-6">
                                     <div class="form-group">
-                                          
+                                        <span *ngIf="selectedPack">*Prix fixé selon le prix du pack choisit</span>
                                     </div>
                                 </div>
 
@@ -108,7 +114,7 @@
                                 </div>
                             </div>
                                 <div class="form-row mt-3 float-right">
-                                <input value="soumettre" type="submit" [disabled]="!targetClient || commandeForm.invalid" class="btn btn-primary" (click)="submit()">
+                                <input value="soumettre" type="submit" [disabled]="!targetClient || commandeForm.invalid || products().length == 0" class="btn btn-primary" (click)="submit()">
                                 <button class="btn btn-danger ml-2">annuler</button>
                             </div>
                         </form>

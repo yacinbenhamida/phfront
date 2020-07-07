@@ -6,7 +6,7 @@ module.exports = (sequelize, Sequelize) => {
             autoIncrement: true
         },
         idpack : {type : Sequelize.INTEGER},
-        idproduit : {type : Sequelize.INTEGER},
+        id_produit : {type : Sequelize.INTEGER},
         quantite : {type : Sequelize.INTEGER},
         isfree : {type : Sequelize.BOOLEAN , default : false},
         createdAt: {type : Sequelize.DATE , default : Date.now()},

@@ -75,4 +75,13 @@ module.exports = app => {
   app.use('/getPacks', passport.authenticate('jwt', {
     session: false
   })).get('/getPacks', packs.getAllPacks);
+  app.use('/getProdPacks', passport.authenticate('jwt', {
+    session: false
+  })).post('/getProdPacks', packs.getProductsOfPack);
+  app.use('/incrementPackSold', passport.authenticate('jwt', {
+    session: false
+  })).post('/incrementPackSold', packs.incrmentPackSold);
+  app.use('/deletePack', passport.authenticate('jwt', {
+    session: false
+  })).post('/deletePack', packs.deletePack);
 };
