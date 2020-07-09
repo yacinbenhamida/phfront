@@ -11,6 +11,7 @@ import { CommandeService } from '../services/commande.service';
 import { Pack } from '../models/pack.model';
 import { PackService } from '../services/pack.service';
 import { PackProduit } from '../models/packproduit.model';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-commandes',
@@ -32,22 +33,38 @@ export class CommandesComponent implements OnInit {
   commandeToAdd : Commande = {} as Commande
   constructor(private cliserv:ClientService,
     private fb:FormBuilder,private prodserv:ProductService,
-    private comserv:CommandeService, private packserv:PackService) { 
+    private comserv:CommandeService, private packserv:PackService,
+    private userservice:UserService) { 
       this.commandeForm = this.fb.group({
         products: this.fb.array([]) ,
       });
   }
   ngOnInit() {
     this.targetClient = 0
-    this.cliserv.getAll('pharmacie').subscribe((p:Client[])=>{
-      this.cliserv.getAll('grossiste').subscribe((g:Client[])=>{
-          this.clients = p.concat(g)
-      })
-      this.prodserv.getAll().subscribe((resl:Produit[])=>{
-        this.produits = resl
-      })
-      this.packserv.getAll().subscribe((pc:Pack[])=>{this.packs = pc})
-    })
+    if(this.userservice.getLoggedOn()){
+    this.userservice.getCurrentUser().subscribe((user:any)=>{
+      this.cliserv.getAll('pharmacie').subscribe((p:Client[])=>{
+        this.cliserv.getAll('grossiste').subscribe((g:Client[])=>{
+          if(user){
+            if(user.role == 'admin'){
+              this.clients = p.concat(g)
+            }
+            else {
+              let pharmacie,grossistes = null
+              pharmacie = p.filter(x=>x.delegue.email === this.userservice.getLoggedOn().email)
+              if(pharmacie){
+                this.clients = this.clients.concat(pharmacie)
+              }  
+              grossistes = g.filter(x=>x.delegue.email === this.userservice.getLoggedOn().email)
+              if(grossistes){
+                this.clients = this.clients.concat(grossistes)
+              }                
+            }
+          }
+
+        })})
+    })  
+  }
   }
   products() : FormArray {
     return this.commandeForm.get("products") as FormArray

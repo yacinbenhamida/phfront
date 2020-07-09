@@ -47,6 +47,20 @@
                                                 <span class="msg font-11" *ngIf="localite.touched && localite.errors">localite
                                                     invalide*</span>
                                             </div>
+                                            <div class="form-row mb-2">
+                                                    <div class="col-md-6">
+                                                        <label>numero telephone</label>
+                                                        <input #tel="ngModel" required minlength="3"
+                                                        [(ngModel)]="grossisteToAdd.num_tel" name="tel" type="text"
+                                                        class="form-control" placeholder="711236547...">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>Email</label>
+                                                        <input #tel="ngModel" required minlength="3"
+                                                        [(ngModel)]="grossisteToAdd.email" name="email" type="text"
+                                                        class="form-control" placeholder="email@entreprise.tn">
+                                                    </div>
+                                            </div>
                                             <div class="form-group">
                                                 <label>délégé</label>
                                             <select required #contrat='ngModel'  [(ngModel)]="grossisteToAdd.delegue?grossisteToAdd.delegue.id : grossisteToAdd.delegue "

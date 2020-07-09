@@ -27,6 +27,10 @@ db.packs = require('./pack.model')(sequelize,Sequelize)
 db.packsproduits = require('./packproduit.model')(sequelize,Sequelize)
 db.commandes = require('./commande.model')(sequelize,Sequelize)
 db.commandeproduits = require('./commandeproduit.model')(sequelize,Sequelize)
+db.veille = require('./veilleconcur.model')(sequelize,Sequelize)
+db.task =  require('./task.model')(sequelize,Sequelize)
+db.usertask =  require('./usertask.model')(sequelize,Sequelize)
+db.comments = require('./comments.model')(sequelize,Sequelize)
 // relations
 
 db.users.hasOne(db.vehicules)
@@ -34,8 +38,11 @@ db.vehicules.belongsTo(db.users)
 
 db.clients.belongsTo(db.users,{as : 'delegue'})
 db.commandes.belongsTo(db.clients, {as : 'client'})
-
-
+db.commandes.belongsTo(db.users, {as : 'emetteur'})
+db.veille.belongsTo(db.produits, {as : 'produitCible'})
+db.veille.belongsTo(db.users, {as : 'analyseur'})
+db.comments.belongsTo(db.users, {as : 'emitter'})
+db.comments.belongsTo(db.task, {as : 'targetTask'})
 // join tbl commande produit
 db.produits.belongsToMany(db.commandes,{
     through: 'commandeProduit',
@@ -74,6 +81,25 @@ db.packsproduits.belongsToMany(db.produits, {
   as: 'produits_packs',
   foreignKey: 'id',
   otherKey: 'id_produit',
+  unique : false
+});
+
+// join tbl user & task 
+db.task.belongsToMany(db.users,{
+  through: 'userTask',
+  foreignKey: 'idTache',
+  otherKey: 'idDelegue',
+})
+db.users.belongsToMany(db.task,{
+  through: 'userTask',
+  foreignKey: 'idDelegue',
+  otherKey: 'idTache',
+})
+db.usertask.belongsToMany(db.users, {
+  through: 'userTask',
+  as: 'task_users',
+  foreignKey: 'id',
+  otherKey: 'idDelegue',
   unique : false
 });
 

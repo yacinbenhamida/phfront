@@ -1,0 +1,152 @@
+
+<main class="content">
+    <div class="container-fluid p-0">
+
+        <h1 class="h3 mb-3">Analyse concurentielle</h1>
+    <div class="row">
+<div class="col-12 col-lg-12 col-xxl-6 d-flex">
+    <div class="card flex-fill">
+        <div class="card-header">
+            <h5 class="card-title">Produit concerné</h5>
+            <h6 class="card-subtitle text-muted"> analyse concurentielle des produits farmavans</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <div class="col-12 col-xl-12 mb-3">
+                    <label>Nom du produit</label>
+            <input type="text"         
+            (ngModelChange)="filterItem($event)" 
+            [(ngModel)]="targetMedic" class="form-control" placeholder="recherche">
+                </div>
+                <div class="col-12 col-xl-12">
+        <select 
+             #selectList
+             [(ngModel)]="myProduct" 
+            (ngModelChange)="onChangeofOptions($event)" class="custom-select mb-3">
+            <option value="empty" selected disabled>Veuillez selectionner un produit</option>
+            <option *ngFor="let item of items" [ngValue]="item">         
+                {{item.libelle}}
+            </option>    
+        </select>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+<div class="col-12 col-lg-12" *ngIf="myProduct">
+    <div class="row">
+    <div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <div class="media float-right">
+                <img [src]="myProduct.image_url" width="80" height="80" class="rounded-circle mr-2" >  
+            </div>
+            <h1>{{myProduct.libelle}} BTE {{myProduct.nb_gellules}}</h1>
+            
+        </div>
+    
+    <div class="card-body">
+    <form #productForm="ngForm">
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Nom du produit concurrent</label>
+                        <input #libelle="ngModel" [(ngModel)]="veille.lib_prod" minlength="3" required
+                            name="libelle" type="text"
+                            class="form-control" placeholder="nom...">
+                        <span class="msg font-11"
+                            *ngIf="libelle.touched && libelle.errors">libelle
+                            invalide*</span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Laboratoire</label>
+                        <input #labo="ngModel" [(ngModel)]="veille.labo" required minlength="3"
+                             name="labo" type="text"
+                            class="form-control" placeholder="laboratoire d'origine...">
+                        <span class="msg font-11" *ngIf="labo.touched && labo.errors">laboratoire
+                            invalide*</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>presentation </label>
+                    <textarea [(ngModel)]="veille.presentation"  name="desc"
+                        class="form-control"
+                        placeholder="description du produit..."
+                        rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Composition </label>
+                    <textarea [(ngModel)]="veille.composition"  name="comp"
+                        class="form-control"
+                        placeholder="compoisition du produit..."
+                        rows="4"></textarea>
+                </div>
+               
+               
+
+
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="form-row">
+
+                    <div class="form-group col-md-6">
+                        <label>prix</label>
+                        <input #prix="ngModel" required [(ngModel)]="veille.prix"
+                            name="prix" type="number" class="form-control" placeholder="TND.">
+                        <span class="msg font-11" *ngIf="prix.touched && prix.errors">prix
+                            invalide*</span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Nombre boites vendues</label>
+                        <input type="number" [(ngModel)]="veille.nb_boites_vendues"
+                            name="nbb_boites" class="form-control" placeholder="total grossiste et VD...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>partenaires</label>
+                    <input type="text"  name="partenaires" [(ngModel)]="veille.partenaires"
+                        class="form-control" placeholder="partenaires potentiels du produit...">
+                </div>
+                <div class="form-group">
+                    <label>Actions</label>
+                    <input type="text" [(ngModel)]="veille.actions" name="actions"
+                        class="form-control" placeholder="medecins,pharmacies...">
+                </div>
+                <div class="form-group">
+                    <label>Posologie </label>
+                    <textarea  name="pos" [(ngModel)]="veille.posologie"
+                        class="form-control"
+                        placeholder="mode d'administration..."
+                        rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Commentaires </label>
+                    <textarea  name="comments"
+                        class="form-control" [(ngModel)]="veille.commentaires"
+                        placeholder="Vos remarques, ou autres informations içi..."
+                        rows="4"></textarea>
+                </div>
+                <div class="form-row mt-3 float-right ">
+                    <div class="">
+                        <button type="submit" [disabled]="productForm.invalid"
+                            (click)="submit(productForm)"
+                            class="btn btn-primary btn-lg ">Enregistrer</button>
+                        <button type="reset"
+                            class="btn btn-danger btn-lg ml-2">Réinitialiser</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>

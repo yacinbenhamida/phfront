@@ -74,7 +74,7 @@ export class PackService {
         'Content-Type': 'application/json',
         'Authorization': "JWT "+connnectedUser.token });
       let options = { headers: headers };
-      return this.http.post('/api/deletePack',{id : id},options)
+      return this.http.post('/api/deletePack',{packId : id},options)
     }
     return null
   }

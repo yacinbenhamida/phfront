@@ -6,11 +6,14 @@ const products = require("../controllers/produit.controller")
 const clients = require('../controllers/client.controller')
 const commande = require('../controllers/commande.controller')
 const packs = require('../controllers/pack.controller')
+const veilles = require('../controllers/veille.controller')
+const tasks = require('../controllers/task.controller')
+const comments = require('../controllers/comment.controller')
 module.exports = app => {
   app.post('/login', auth.login);
   app.use('/logout', passport.authenticate('jwt', {
     session: false
-  })).get('/logout', auth.logout);
+  })).post('/logout', auth.logout);
   app.use('/register', passport.authenticate('jwt', {
     session: false
   })).post('/register', auth.register);
@@ -84,4 +87,42 @@ module.exports = app => {
   app.use('/deletePack', passport.authenticate('jwt', {
     session: false
   })).post('/deletePack', packs.deletePack);
+  app.use('/addVeille', passport.authenticate('jwt', {
+    session: false
+  })).post('/addVeille', veilles.addVeille);
+  app.use('/getVeilles', passport.authenticate('jwt', {
+    session: false
+  })).get('/getVeilles', veilles.getAll);
+  app.use('/deleteVeille', passport.authenticate('jwt', {
+    session: false
+  })).post('/deleteVeille', veilles.delete);
+  // tasks
+  app.use('/addTask', passport.authenticate('jwt', {
+    session: false
+  })).post('/addTask', tasks.addTask);
+  app.use('/getAllTasks', passport.authenticate('jwt', {
+    session: false
+  })).get('/getAllTasks', tasks.getAllTasks);
+  app.use('/getUTOfTask', passport.authenticate('jwt', {
+    session: false
+  })).post('/getUTOfTask', tasks.getUTofTask);
+  app.use('/deleteTask', passport.authenticate('jwt', {
+    session: false
+  })).post('/deleteTask', tasks.deleteTask);
+  app.use('/updateTaskstatus', passport.authenticate('jwt', {
+    session: false
+  })).post('/updateTaskstatus', tasks.updateTaskStatus);
+  // comments
+  app.use('/addComment', passport.authenticate('jwt', {
+    session: false
+  })).post('/addComment', comments.addComment);
+  app.use('/deleteComment', passport.authenticate('jwt', {
+    session: false
+  })).post('/deleteComment', comments.deleteComment);
+  app.use('/getCommentsOfTask', passport.authenticate('jwt', {
+    session: false
+  })).post('/getCommentsOfTask', comments.getCommentsOfTask);
+  app.use('/getTask', passport.authenticate('jwt', {
+    session: false
+  })).post('/getTask', tasks.getTask);
 };

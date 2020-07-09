@@ -83,6 +83,8 @@ exports.login = (req, res, next) => {
       },
     }).then(user => {
       if (user && isValidPassword(user.password, req.body.password)) {
+        user.status = 'active'
+        user.save()
         const token = jwt.sign({ id: user.email }, jwtSecret.secret);
         res.status(200).send({
           auth: true,
@@ -94,8 +96,19 @@ exports.login = (req, res, next) => {
     });
 }
 exports.logout = (req,res) =>{
-  req.logout();
-  res.sendStatus(200)
+  if(req.body.email){
+    User.findOne({
+      where: {
+        email: req.body.email,
+      },
+    }).then(user => {
+        user.status = 'offline'
+        user.save()
+        req.logout();
+        res.send({message : 'out'})
+    })
+  }
+
 }
 exports.editUser = (req,res) => {
   User.findOne({

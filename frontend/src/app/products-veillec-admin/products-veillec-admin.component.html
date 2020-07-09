@@ -1,0 +1,185 @@
+<div class="main">
+    <main class="content">
+        <div class="container-fluid p-0">
+            <h1 class="h3 mb-3">Veilles concurentielles</h1>
+            <div class="row" *ngIf="selectedVeille">
+                <div class="col-6" >
+                    <div class="card">
+                        <div class="card-header">
+                        <div class="media float-right">
+                            <img class="rounded-circle mr-2" width="80" height="80" [src]="selectedVeille.produitCible.image_url" >
+                        </div>
+                        <h5 class="card-title">{{selectedVeille.produitCible.libelle}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>{{selectedVeille.produitCible.description}}</p>
+                            <table class="table table-sm my-2">
+                                <tbody>
+                                    <tr>
+                                        <th>Nom complet</th>
+                                        <td>{{selectedVeille.produitCible.libelle}} BTE {{selectedVeille.produitCible.nb_gellules}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Prix</th>
+                                        <td>{{selectedVeille.produitCible.prix}} TND.</td>
+                                    </tr>
+                                    <tr *ngIf="selectedVeille.produitCible.fiche_poso">
+                                        <th>Posologie</th>
+                                        <td  class="text-center"><a  [href]="selectedVeille.produitCible.fiche_poso" 
+                                            target="_blank">
+                                            <i class="fas fa-file-alt"></i> </a> <br />
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="selectedVeille.produitCible.composition">
+                                        <th>Composition</th>
+                                        <td  class="text-center"><a  [href]="selectedVeille.produitCible.composition"
+                                            target="_blank">
+                                            <i class="fas fa-wrench"></i> </a> <br />
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="selectedVeille.produitCible.etude_cliniques">
+                                        <th>Etudes cliniques</th>
+                                        <td class="text-center"><a  [href]="selectedVeille.produitCible.etude_cliniques"
+                                            target="_blank">
+                                            <i class="fas fa-file-medical-alt"></i> </a> <br />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6" >
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">{{selectedVeille.lib_prod}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>{{selectedVeille.presentation}}</p>
+                            <table class="table table-sm my-2">
+                                <tbody>
+                                    <tr>
+                                        <th>Nom complet</th>
+                                        <td>{{selectedVeille.lib_prod}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Laboratoire concurrent</th>
+                                        <td>{{selectedVeille.labo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Prix</th>
+                                        <td>{{selectedVeille.prix}} TND.</td>
+                                    </tr>
+                                    <tr *ngIf="selectedVeille.posologie">
+                                        <th>Posologie</th>
+                                        <td>{{selectedVeille.posologie}}
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="selectedVeille.composition">
+                                        <th>Composition</th>
+                                        <td >{{selectedVeille.composition}}
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="selectedVeille.nb_boites_vendues">
+                                        <th>Boites totales vendues</th>
+                                        <td>{{selectedVeille.nb_boites_vendues}}</td>
+                                    </tr>
+                                    <tr *ngIf="selectedVeille.actions">
+                                        <th>Actions</th>
+                                        <td>{{selectedVeille.actions}}</td>
+                                    </tr>
+                                    <tr *ngIf="selectedVeille.partenaires">
+                                        <th>partenaires</th>
+                                        <td>{{selectedVeille.partenaires}}</td>
+                                    </tr>
+                                    <tr *ngIf="selectedVeille.commentaires">
+                                        <th>commentaires</th>
+                                        <td>{{selectedVeille.commentaires}}</td>
+                                    </tr>
+                                    <tr *ngIf="selectedVeille.createdAt">
+                                        <th>Date analyse</th>
+                                        <td>{{selectedVeille.createdAt | date:'medium'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+<div class="row">
+    <div *ngIf="veilles.length == 0" class="col-md-12">
+    <div class="alert alert-primary alert-outline alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+        <div class="alert-icon">
+            <i class="far fa-fw fa-bell"></i>
+        </div>
+        <div class="alert-message">
+            <strong>Pas de veilles enregistrés</strong>
+        </div>
+    </div>
+</div>
+    <div class="col-12" >
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Liste des pharmacies</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-bordered " [dtTrigger]="trigger" datatable
+                    [dtOptions]="dtOptions">
+                    <thead>
+                        <tr>
+                            <th>Produit farmavans</th>
+                            <th>Concurrent</th>
+                            <th>Laboratoire</th>
+                            <th>Prix</th>
+                            <th *ngIf="user.role =='admin'">Délégué</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let g of veilles">
+                            <td>
+                                <img [src]="g.produitCible.image_url" width="48" height="48" class="rounded-circle mr-2" >  
+                            {{g.produitCible.libelle}}</td>
+                            <td>{{g.lib_prod}}</td>
+                            <td>{{g.labo}}</td>
+                            <td>{{g.prix}} TND.</td>
+                            <td *ngIf="user.role =='admin'">{{g.analyseur? g.analyseur.nom+' '+g.analyseur.prenom : ''}}</td>
+                        <td class="text-center"><button (click)="showDetails(g)" class="btn btn-pill btn-primary">details</button>
+                                    <button class="btn btn-pill btn-danger ml-2" data-toggle="modal" (click)="selectedReview = g"
+                                data-target="#sizedModalSm"><i class="fas fa-times"></i></button>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</main>
+</div>
+
+<!--modal-->
+<div class="modal fade" *ngIf="selectedReview" id="sizedModalSm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Supprimer l'analyse </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body m-3">
+                <p class="mb-0">Etes vous sûr(e) de vouloir supprimer l'analyse de {{selectedReview.lib_prod}}?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">annuler</button>
+                <button type="button"  (click)="deleteReview()" class="btn btn-danger">supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>

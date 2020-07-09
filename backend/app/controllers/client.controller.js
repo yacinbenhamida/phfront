@@ -3,13 +3,7 @@ const User = require('../models').users
 exports.addClient = (req,res) => {
     let client = req.body.client
     if(client){
-        Client.create({
-            nom_client: client.nom_client,
-            Localite : client.Localite,
-            addresse :client.addresse,
-            type_client : client.type_client,
-            partenaires : client.partenaires,
-        }).then((result)=>{
+        Client.create(client,{w:1},{returning : true}).then((result)=>{
             if(result){
               if(client.delegue){
                 User.findOne({

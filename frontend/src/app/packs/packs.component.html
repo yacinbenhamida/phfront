@@ -155,7 +155,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xl-8">
+            <div [ngClass]="!selectedPack?'col-xl-12' :'col-xl-8' ">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">liste des packs</h5>
@@ -175,7 +175,7 @@
                                 <tr *ngFor="let p of listPacks">
                                     <td>{{p.nom_pack}}</td>
                                     <td><span class="badge badge-pill badge-danger" *ngIf="p.type_pack == 'panache'">{{p.type_pack}}</span> <span class="badge badge-pill badge-info" *ngIf="p.type_pack == 'normal'">{{p.type_pack}}</span></td>
-                                    <td>{{p.prix_total.toFixed(2)}} TND.</td>
+                                    <td>{{p.prix_total ? p.prix_total.toFixed(2) : 0}} TND.</td>
                                     <td class="text-center"><button (click)="showPackDetails(p)" class="btn btn-success">Details</button>
                                     <button (click)="setPack(p)" data-target="#sizedModalSm" class="btn btn-danger ml-2" data-toggle="modal">X</button></td>
                                 </tr>
@@ -211,7 +211,7 @@
                                 </tr>
                                 <tr>
                                     <th>Prix total TTC</th>
-                                    <td><strong>{{selectedPack.prix_total.toFixed(3)}} TND </strong></td>
+                                    <td><strong>{{selectedPack.prix_total ? selectedPack.prix_total.toFixed(3) : 0}} TND </strong></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -266,7 +266,7 @@
     </div>
 </main>
 
-<div class="modal fade" id="sizedModalSm" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="sizedModalSm" *ngIf="selectedPackForDelete" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">

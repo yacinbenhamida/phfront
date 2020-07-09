@@ -18,14 +18,15 @@ exports.addPack = (req, res)=> {
                             }
                             PackProduit.create(prodpack,{w:1}, { returning: true }).then(
                                 finalresult=> {
-                                    if(finalresult) console.log('inserted product pack')
+                                    console.log({message : 'inserted product pack'})                                    
                                 }
                             )
                         }
                     })
                 });  
-            }else res.send('no packs , must be simple pack')
+            }else console.log('no packs , must be simple pack')
         })
+        res.send({message : 'done'})
     }
     else res.status(405)
 }
@@ -73,7 +74,7 @@ exports.deletePack = (req,res) => {
                     id : packId
                 }
             }).then(exec=>{
-                if(exec) res.status(200)
+                res.send({message :'done' })
             })
         }
         else res.status(404)

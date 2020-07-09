@@ -54,12 +54,12 @@ export class PacksComponent implements OnInit {
   }
   submit(g:NgForm){
     if(g.valid && this.packForm.valid && this.packToadd){
-      this.packserv.add(this.packToadd,this.packForm.value.products).subscribe(()=>{
+      this.packserv.add(this.packToadd,this.packForm.value.products).toPromise().then((res)=>{
         window.location.reload()
-      },err=>this.addError = true)
+      }).catch(err=>{this.addError = true})
 
     }
-      
+    else this.addError = true
   }
   products() : FormArray {
     return this.packForm.get("products") as FormArray
@@ -113,15 +113,14 @@ export class PacksComponent implements OnInit {
     this.packserv.getProdPacks(pack.id).subscribe((res:PackProduit[])=>{
       this.selectedPack  = pack
       this.PPOfselectedPack = res
-      console.log(res)
-      console.log(this.PPOfselectedPack)
-      console.log(pack)
-
     })
     
   }
-  deletePack(id){
-    this.packserv.delete(id).subscribe(res=>window.location.reload())
+  deletePack(){
+    this.packserv.delete(this.selectedPackForDelete.id).subscribe(()=>{
+      this.selectedPackForDelete = null
+      window.location.reload()
+    })
   }
   setPack(p){
     this.selectedPackForDelete = p

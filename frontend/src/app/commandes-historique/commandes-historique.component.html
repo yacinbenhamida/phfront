@@ -22,7 +22,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="text-muted">Commande No.</div>
-                                <strong>{{selectedCommande.id}}</strong>
+                                <strong>FC{{selectedCommande.id}}</strong>
                             </div>
                             <div class="col-md-6 text-md-right">
                                 <div class="text-muted">Date d'emission</div>
@@ -46,7 +46,6 @@
                                 </p>
                             </div>
                             <div class="col-md-6 text-md-right">
-                                <div class="text-muted">Pour</div>
                                 <strong>
                                     Farmavans
                                 </strong>
@@ -55,8 +54,9 @@
                                     Tunis <br>
                                     1009 <br>
                                     Tunisie <br>
+                                    N° Tel +216 97 668 753 <br>
                                     <a href="#">
-                                        info@farmavans.tn
+                                        contact@farmavans.com
                                     </a>
                                 </p>
                             </div>
@@ -78,7 +78,7 @@
                                     <td>{{l.produits[0].prix}} TND.</td>
                                     <td>X{{l.quantite}}</td>
                                     <td>{{l.remise}} %</td>
-                                    <td class="text-right">{{l.prixTTC}} TND.</td>
+                                    <td class="text-right">{{l.prixTTC.toFixed(3)}} TND.</td>
                                 </tr>
                                 <tr>
                                     <th>&nbsp;</th>
@@ -99,7 +99,7 @@
                                     <th>&nbsp;</th>
                                     <th>&nbsp;</th>
                                     <th>Total </th>
-                                    <th class="text-right">{{selectedCommande.prix_total}} TND.</th>
+                                    <th class="text-right">{{selectedCommande.prix_total.toFixed(3)}} TND.</th>
                                 </tr>
                             </tbody>
                         </table>
@@ -110,9 +110,9 @@
                                 Devis approximatif, sauf erreur ou omission de notre part.
                             </p>
 
-                            <a id="imp" *ngIf="isPrinting == false" (click)="printPage()" class="btn btn-primary">
+                            <button id="imp" *ngIf="isPrinting == false" (click)="printPage()" class="btn btn-primary">
                                 Imprimer
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -135,24 +135,27 @@
                         <table class="table table-striped table-bordered table-sm row-border hover" [dtTrigger]="trigger" datatable [dtOptions]="dtOptions">
                             <thead>
                               <tr>
+                                <th>#</th>
                                 <th>Client</th>
+                                <th *ngIf="user.role == 'admin'">Délégué</th>
                                 <th>type client</th>
                                 <th>nombre produits</th>
                                 <th>total remise</th>
-                                <th>type d'achat</th>
                                 <th>prix total</th>
                                 <th></th>
                               </tr>
                             </thead>
                             <tbody>
                              <tr *ngFor="let c of commandes">
+                                    <td>FC{{c.id}}</td>                          
                                    <td>{{c.client.nom_client}}</td>
+                                   <td  *ngIf="user.role == 'admin'">{{c.emetteur.nom}} {{c.emetteur.prenom}}</td>
                                    <td>{{c.client.type_client}}</td>
                                    <td>{{c.nb_produits}}</td>
                                    <td>{{c.total_remise}} %</td>
-                                   <td>{{c.type}}</td>
                                    <td>{{c.prix_total}} TND</td>
-                                   <td class="text-center"><button (click)="loadInvoice(c)" class="btn btn-success">détails</button><button (click)="deleteInvoice(c)" class="btn btn-danger ml-2">X</button></td>
+                                   <td class="text-center"><button (click)="loadInvoice(c)" class="btn btn-success">détails</button>
+                                    <button (click)="deletableInvoice = c" data-toggle="modal" data-target="#sizedModalSm" class="btn btn-danger ml-2">X</button></td>
                                </tr>
                             </tbody>
                           </table>
@@ -163,3 +166,24 @@
 
     </div>
 </main>
+
+<!--modal-->
+<div class="modal fade" *ngIf="deletableInvoice" id="sizedModalSm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Supprimer la commande </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body m-3">
+                <p class="mb-0">Etes vous sûr(e) de vouloir supprimer la commande N° FC{{deletableInvoice.id}} de {{deletableInvoice.client.nom_client}} au prix de {{deletableInvoice.prix_total}} TND?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">annuler</button>
+                <button type="button"  (click)="deleteReview()" class="btn btn-danger">supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>

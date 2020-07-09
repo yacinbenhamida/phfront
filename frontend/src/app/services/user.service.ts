@@ -25,7 +25,7 @@ export class UserService {
         'Content-Type': 'application/json',
         'Authorization': "JWT "+user.token });
       let options = { headers: headers };
-      return this.http.get('/api/logout',options)
+      return this.http.post('/api/logout',{email : user.email},options)
     }
     return null
   }

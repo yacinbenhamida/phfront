@@ -24,9 +24,11 @@ export class TopbarComponent implements OnInit {
   }
   }
   logout(){
-      this.userv.logout()
-      localStorage.clear()
-      sessionStorage.clear()
-      this.router.navigate(['login'])
+      this.userv.logout().subscribe(res=>{
+        localStorage.clear()
+        sessionStorage.clear()
+        this.router.navigate(['login'])
+      })
+      
   }
 }

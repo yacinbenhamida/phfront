@@ -11,4 +11,8 @@ export interface Client{
     updatedAt: Date
     delegue : User
     animatrice : User
+    num_tel : string
+    email : string
+    nb_achats : number
+
 }

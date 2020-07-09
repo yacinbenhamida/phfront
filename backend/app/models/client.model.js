@@ -18,6 +18,15 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.ENUM,
             values: ['pharmacie', 'grossiste','autres']
         },
+        num_tel : {
+            type: Sequelize.STRING
+        },
+        email : {
+            type: Sequelize.STRING
+        },
+        nb_achats : {
+            type: Sequelize.INTEGER
+        },
         partenaires : {
             type: Sequelize.TEXT
         },

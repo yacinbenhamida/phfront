@@ -4,6 +4,8 @@ import { Commande } from '../models/commande.model';
 import { Subject } from 'rxjs';
 import { CommandeProduit } from '../models/commandeproduit.model';
 import { Produit } from '../models/produit.model';
+import { UserService } from '../services/user.service';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-commandes-historique',
@@ -12,12 +14,14 @@ import { Produit } from '../models/produit.model';
 })
 export class CommandesHistoriqueComponent implements OnInit {
   commandes :Commande [] = []
-  constructor(private comserv:CommandeService) { }
+  constructor(private comserv:CommandeService, private userv:UserService) { }
   dtOptions: DataTables.Settings = {};
   trigger: Subject<Commande> = new Subject();
   detailsCommande : CommandeProduit [] = []
   selectedCommande : Commande
   isPrinting : boolean = false
+  deletableInvoice : Commande
+  user:User = {} as User
   ngOnInit() {
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -25,23 +29,36 @@ export class CommandesHistoriqueComponent implements OnInit {
       processing: true,
       responsive : true
     };
-    this.comserv.getAll().subscribe((res : Commande[])=>{
-        this.commandes = res
-        this.trigger.next()
-        console.log(res)
+    this.userv.getCurrentUser().subscribe((user:any)=>{
+      if(user){
+        this.user = user
+        this.comserv.getAll().subscribe((res : Commande[])=>{
+          if(user.role === "admin"){
+            this.commandes = res
+          }
+          else{
+            this.commandes = res.filter(x=>x.emetteur.email === user.email)
+          }  
+            this.trigger.next()
+        })
+      }
+      
     })
+    
   }
   loadInvoice(c:Commande){
     this.selectedCommande = c
     this.comserv.getProduitsOfCommande(c.id).subscribe((lignec:CommandeProduit[])=>{
-      console.log(lignec)
         this.detailsCommande = lignec
     })
   }
-  deleteInvoice(c:Commande){
-    this.comserv.delete(c.id).subscribe(()=>{
-      window.location.reload()
-    })
+  deleteInvoice(){
+    if(this.deletableInvoice){
+      this.comserv.delete(this.deletableInvoice.id).subscribe(()=>{
+        window.location.reload()
+      })
+    }
+    
   }
   printPage(){
     this.isPrinting = true

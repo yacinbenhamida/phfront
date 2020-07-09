@@ -28,6 +28,14 @@ import { ClientGrossistesComponent } from './client-grossistes/client-grossistes
 import { CommandesComponent } from './commandes/commandes.component';
 import { CommandesHistoriqueComponent } from './commandes-historique/commandes-historique.component';
 import { CommandeProduitItemComponent } from './commande-produit-item/commande-produit-item.component';
+import { ProductsVeillecComponent } from './products-veillec/products-veillec.component';
+import { ProductsVeillecAdminComponent } from './products-veillec-admin/products-veillec-admin.component';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { TasksComponent } from './tasks/tasks.component';
+import { TaskElementComponent } from './task-element/task-element.component';
+import { TaskDiscussionComponent } from './task-discussion/task-discussion.component';
+registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +57,12 @@ import { CommandeProduitItemComponent } from './commande-produit-item/commande-p
     ClientGrossistesComponent,
     CommandesComponent,
     CommandesHistoriqueComponent,
-    CommandeProduitItemComponent
+    CommandeProduitItemComponent,
+    ProductsVeillecComponent,
+    ProductsVeillecAdminComponent,
+    TasksComponent,
+    TaskElementComponent,
+    TaskDiscussionComponent
   ],
   imports: [
     BrowserModule,

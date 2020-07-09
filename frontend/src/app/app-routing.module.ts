@@ -13,6 +13,10 @@ import { ClientPharmaciesComponent } from './client-pharmacies/client-pharmacies
 import { ClientGrossistesComponent } from './client-grossistes/client-grossistes.component';
 import { CommandesComponent } from './commandes/commandes.component';
 import { CommandesHistoriqueComponent } from './commandes-historique/commandes-historique.component';
+import { ProductsVeillecComponent } from './products-veillec/products-veillec.component';
+import { ProductsVeillecAdminComponent } from './products-veillec-admin/products-veillec-admin.component';
+import { TasksComponent } from './tasks/tasks.component';
+import { TaskDiscussionComponent } from './task-discussion/task-discussion.component';
 
 
 const routes: Routes = [
@@ -25,6 +29,10 @@ const routes: Routes = [
   {path : 'packs', component : PacksComponent, canActivate : [AuthGuardService]},
   {path : 'pharmacie-clients', component : ClientPharmaciesComponent, canActivate : [AuthGuardService]},
   {path : 'grossiste-clients', component : ClientGrossistesComponent, canActivate : [AuthGuardService]},
+  {path : 'veille-concurentielle', component : ProductsVeillecComponent, canActivate : [AuthGuardService]},
+  {path : 'veille-concurentielle-admin', component : ProductsVeillecAdminComponent, canActivate : [AuthGuardService]},
+  {path : 'taches', component : TasksComponent, canActivate : [AuthGuardService]},
+  {path : 'discussion/:id', component : TaskDiscussionComponent, canActivate : [AuthGuardService]},
   {path : 'login' , component : LoginComponent},
   { path: '', component: DashboardComponent, canActivate : [AuthGuardService] },
   {path : '**', redirectTo : ''}

@@ -20,7 +20,7 @@ export class CommandeService {
         'Content-Type': 'application/json',
         'Authorization': "JWT "+connnectedUser.token });
       let options = { headers: headers };
-      return this.http.post('/api/addCommande',{commande : commande , produits : produits},options)
+      return this.http.post('/api/addCommande',{commande : commande , produits : produits , emetteur : connnectedUser.email},options)
     }
     return null
   }

@@ -2,13 +2,24 @@ const Commande = require('../models').commandes
 const CommandeProduit = require('../models').commandeproduits
 const Produit = require('../models').produits
 const Client = require('../models').clients
+const User = require('../models').users
 
 exports.addCommande = (req,res) => {
     const commande = req.body.commande
     const produits = req.body.produits
+    const emetteur = req.body.emetteur
     if(commande && produits){
         Commande.create(commande, {w: 1}, { returning: true }).then(cmd=>{
         if(cmd){
+            // finding the user
+            if(emetteur){
+                User.findOne({where : {email : emetteur}}).then(user=>{
+                cmd.setEmetteur(user)
+                cmd.save()
+            }) 
+            }else{
+                return res.status(403).send({message : 'UNOTHORIZED'})
+            } 
             // affectation client
             const cli = commande.client
             if(cli){
@@ -36,17 +47,20 @@ exports.addCommande = (req,res) => {
                             if(cp) console.log({message : 'added products'})
                             else console.log({message : 'failed to add products'})       
                         })
+                        Produit.increment('times_sold', { by: 1, where: { id: prod.id }}).then(r=>{
+                            return res.send({message : 'done'})
+                        })
                     } 
                 })
             });
         }
     })
     }
-    else res.status(404)        
+    else return res.status(404)        
     
 }
 exports.getAllCommandes = (req,res) => {
-    Commande.findAll({include: ['client']}).then(result=>{
+    Commande.findAll({include: ['client','emetteur']}).then(result=>{
         res.send(result)
     })
 }
@@ -77,8 +91,7 @@ exports.deleteCommande = (req,res) => {
                     id : commandeId
                 }
             }).then(exec=>{
-                if(exec) res.status(200)
-                else res.status(403)
+                res.send({message : 'done'})
             })
         }
         else res.status(404)
