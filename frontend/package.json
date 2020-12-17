@@ -22,7 +22,7 @@
     "@auth0/angular-jwt": "^4.2.0",
     "angular-datatables": "^9.0.2",
     "bootstrap": "^4.5.0",
-    "datatables.net": "^1.10.21",
+    "datatables.net": "^1.10.22",
     "datatables.net-bs4": "^1.10.21",
     "datatables.net-dt": "^1.10.21",
     "feather-icons": "^4.28.0",
